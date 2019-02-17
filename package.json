@@ -1,0 +1,29 @@
+{
+  "name": "lv_i18n",
+  "version": "0.1.0",
+  "description": "CLI tools for LittlevGL i18n support.",
+  "keywords": [
+    "i18n",
+    "internationalization"
+  ],
+  "repository": "lvgl/lv_i18n",
+  "license": "MIT",
+  "files": [
+    "lv_i18n.js",
+    "lib/"
+  ],
+  "bin": {
+    "lv_i18n": "lv_i18n.js"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "test": "npm run lint && nyc mocha",
+    "coverage": "npm run test && nyc report --reporter html"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^5.8.0",
+    "mocha": "^5.2.0",
+    "nyc": "^13.1.0"
+  }
+}
