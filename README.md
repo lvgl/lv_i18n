@@ -35,7 +35,7 @@ Initialize i18n module, somewhere in your code:
 lv_i18n_init(i18n_translations);
 
 // Set active locale (can be switched anytime)
-lv_i18n_set_locale('ru-RU');
+lv_i18n_set_locale("ru-RU");
 ```
 
 Then, in all your sources:
@@ -43,8 +43,8 @@ Then, in all your sources:
 ```c
 #include "translations.h"
 
-char* mytext = _("my text to translate");
-char* my_plural_text = _p("my text to translate", number);
+const char* mytext = _("my text to translate");
+const char* my_plural_text = _p("my text to translate", number);
 ```
 
 CLI tools install ([node.js](https://nodejs.org/en/download/) required):
@@ -146,7 +146,7 @@ lv_i18n compile -h
 Examples:
 
 ```sh
-lv_i18n extract -s 'src/**.(c|cpp|h|hpp)' -s inc/** -t src/i18n/*.yml
+lv_i18n extract -s 'src/**.+(c|cpp|h|hpp)' -s inc/** -t src/i18n/*.yml
 lv_i18n compile -t src/i18n/*.yml -o src/translations.c
 lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 ```
@@ -183,9 +183,6 @@ simplifications:
   'LVGL is awesome!': ~ # null (still untranslated), added by extractor
 ```
 
-- Locale names are "full" (`en-GB`, not `en`), following
-  [BCP 47](http://www.rfc-editor.org/rfc/bcp/bcp47.txt). This is not
-  mandatory, but used in utilities to validate content and report warnings.
 - No nesting subtrees, `foo.bar.baz` will be just a plain string
 
 It's possible to store everything in one file, but we strongly recommend keep
@@ -195,7 +192,7 @@ files, all data will be joined automatically.
 If you wish add new locale - just create a new file with this content:
 
 ```yaml
-your_new_locale_name: {}
+your_new_locale_name: ~
 ```
 
 Then run extractor to fill missed keys.

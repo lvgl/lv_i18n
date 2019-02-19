@@ -1,0 +1,5 @@
+en-US:
+  # key 'foo' missed, for coverage
+  nail:
+    one: nail
+    other: nails
