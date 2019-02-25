@@ -1,0 +1,4 @@
+unity/
+build/
+*.gcno
+*.gcda
