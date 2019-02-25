@@ -1,6 +1,6 @@
 #include "./lv_i18n.h"
 
-/*-LV_I18N_READL_DATA_INJECT-*/
+/*-LV_I18N_READY_DATA_INJECT-*/
 
 /*-LV_I18N_SAMPLE_DATA_START-*/
 static lv_i18n_phrase_t en_gb_singulars[] = {
@@ -38,29 +38,39 @@ static const lv_i18n_lang_t en_gb_lang = {
     .locale_plural_fn = en_gb_plural_fn,
 };
 
-const lv_i18n_lang_t * language_pack[] = {
-    &en_gb_lang,    /*The first language will be the default*/
-    NULL,           /*Mark that there is no more languages*/
+const lv_i18n_lang_pack_t lv_i18n_language_pack[] = {
+    &en_gb_lang,
+    NULL
 };
 
 /*- LV_I18N_SAMPLE_DATA_END-*/
 
 
-const lv_i18n_lang_t ** languages;
-const lv_i18n_lang_t * local_lang;
+// Internal state
+static const lv_i18n_lang_pack_t * current_lang_pack;
+static const lv_i18n_lang_t * current_lang;
 
+
+/**
+ * Reset internal state. For testing.
+ */
+void __lv_i18n_reset(void)
+{
+    current_lang_pack = NULL;
+    current_lang = NULL;
+}
 
 /**
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
  */
-int lv_i18n_init(const lv_i18n_lang_t ** langs)
+int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
 {
     if(langs == NULL) return -1;
     if(langs[0] == NULL) return -1;
 
-    languages = langs;
-    local_lang = langs[0];     /*Automatically select the first language*/
+    current_lang_pack = langs;
+    current_lang = langs[0];     /*Automatically select the first language*/
     return 0;
 }
 
@@ -70,14 +80,14 @@ int lv_i18n_init(const lv_i18n_lang_t ** langs)
  */
 int lv_i18n_set_locale(const char * l_name)
 {
-    if(languages == NULL) return -1;
+    if(current_lang_pack == NULL) return -1;
 
     uint16_t i;
 
-    for(i = 0; languages[i] != NULL; i++) {
+    for(i = 0; current_lang_pack[i] != NULL; i++) {
         // Found -> finish
-        if(strcmp(languages[i]->locale_name, l_name) == 0) {
-            local_lang = languages[i];
+        if(strcmp(current_lang_pack[i]->locale_name, l_name) == 0) {
+            current_lang = current_lang_pack[i];
             return 0;
         }
     }
@@ -86,7 +96,7 @@ int lv_i18n_set_locale(const char * l_name)
 }
 
 
-const void * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char * msg_id)
+const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char * msg_id)
 {
     uint16_t i;
     for(i = 0; trans[i].msg_id != NULL; i++) {
@@ -105,15 +115,15 @@ const void * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char * msg_
  * @param msg_id message ID
  * @return the translation of `msg_id` on the set local
  */
-const void * lv_i18n_get_text(const char * msg_id)
+const char * lv_i18n_get_text(const char * msg_id)
 {
-    if(local_lang == NULL) return msg_id;
+    if(current_lang == NULL) return msg_id;
 
-    const lv_i18n_lang_t * lang = local_lang;
+    const lv_i18n_lang_t * lang = current_lang;
 
     if(lang->singulars == NULL) {
-        if(lang == languages[0]) return msg_id;
-        else lang = languages[0];
+        if(lang == current_lang_pack[0]) return msg_id;
+        else lang = current_lang_pack[0];
 
         if(lang->singulars == NULL) return msg_id;
     }
@@ -121,8 +131,8 @@ const void * lv_i18n_get_text(const char * msg_id)
     /*Find the translation*/
     const void * txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
     if(txt == NULL) {
-        if(lang == languages[0]) return msg_id;
-        else lang = languages[0];
+        if(lang == current_lang_pack[0]) return msg_id;
+        else lang = current_lang_pack[0];
     }
 
     /*Try again with the default language*/
@@ -140,14 +150,14 @@ const void * lv_i18n_get_text(const char * msg_id)
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const void * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
+const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
 {
-    if(local_lang == NULL) return msg_id;
+    if(current_lang == NULL) return msg_id;
 
-    const lv_i18n_lang_t * lang = local_lang;
+    const lv_i18n_lang_t * lang = current_lang;
     if(lang->plurals == NULL || lang->locale_plural_fn == NULL) {
-        if(lang == languages[0]) return msg_id;
-        else lang = languages[0];
+        if(lang == current_lang_pack[0]) return msg_id;
+        else lang = current_lang_pack[0];
 
         if(lang->plurals == NULL) return msg_id;
     }
@@ -155,15 +165,15 @@ const void * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
     lv_i18n_plural_type_t ptype = lang->locale_plural_fn(num);
 
     if(lang->plurals[ptype] == NULL) {
-        if(lang == languages[0]) return msg_id;
-        else lang = languages[0];
+        if(lang == current_lang_pack[0]) return msg_id;
+        else lang = current_lang_pack[0];
     }
 
     /*Find the translation*/
     const void * txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
     if(txt == NULL) {
-        if(lang == languages[0]) return msg_id;
-        else lang = languages[0];
+        if(lang == current_lang_pack[0]) return msg_id;
+        else lang = current_lang_pack[0];
     }
 
     /*Try again with the default language*/
@@ -184,8 +194,8 @@ const void * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
  * Get the name of the currently used locale.
  * @return name of the currently used locale. E.g. "en-GB"
  */
-const void * lv_i18n_get_current_locale(void)
+const char * lv_i18n_get_current_locale(void)
 {
-    if(!local_lang) return NULL;
-    return local_lang->locale_name;
+    if(!current_lang) return NULL;
+    return current_lang->locale_name;
 }

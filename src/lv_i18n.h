@@ -30,18 +30,18 @@ typedef struct {
     uint8_t (*locale_plural_fn)(int32_t num);
 } lv_i18n_lang_t;
 
-extern const lv_i18n_lang_t ** languages;
+// Null-terminated list of languages. First one used as default.
+typedef const lv_i18n_lang_t * lv_i18n_lang_pack_t;
 
-// Expose for testing
-extern const lv_i18n_lang_t * language_pack[];
-extern const lv_i18n_lang_t * local_lang;
+
+extern const lv_i18n_lang_pack_t lv_i18n_language_pack[];
 
 
 /**
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
  */
-int lv_i18n_init(const lv_i18n_lang_t ** langs);
+int lv_i18n_init(const lv_i18n_lang_pack_t * langs);
 
 /**
  * Change the localization (language)
@@ -54,7 +54,7 @@ int lv_i18n_set_locale(const char * l_name);
  * @param msg_id message ID
  * @return the translation of `msg_id` on the set local
  */
-const void * lv_i18n_get_text(const char * msg_id);
+const char * lv_i18n_get_text(const char * msg_id);
 
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
@@ -62,13 +62,16 @@ const void * lv_i18n_get_text(const char * msg_id);
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const void * lv_i18n_get_text_plural(const char * msg_id, int32_t num);
+const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num);
 
 /**
  * Get the name of the currently used localization.
  * @return name of the currently used localization. E.g. "en_GB"
  */
-const void * lv_i18n_get_current_locale(void);
+const char * lv_i18n_get_current_locale(void);
+
+
+void __lv_i18n_reset(void);
 
 
 #define _(text) lv_i18n_get_text(text)
