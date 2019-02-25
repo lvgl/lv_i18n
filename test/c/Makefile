@@ -45,7 +45,8 @@ test-deps:
 		git remote add origin https://github.com/ThrowTheSwitch/Unity.git; \
 		git fetch origin; \
 		git checkout origin/master -- src
-	pip install gcovr
+	# This fails in Travis, install manually
+	#pip install gcovr
 
 clean:
 	rm -f $(TARGET) $(BUILD_DIR)/*.gc*
