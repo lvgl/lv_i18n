@@ -18,7 +18,8 @@
   "scripts": {
     "lint": "eslint .",
     "test": "npm run lint && nyc mocha",
-    "coverage": "npm run test && nyc report --reporter html"
+    "coverage": "npm run test && nyc report --reporter html",
+    "template_update": "./support/template_update.js"
   },
   "dependencies": {
     "argparse": "^1.0.10",

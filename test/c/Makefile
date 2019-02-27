@@ -16,8 +16,6 @@ CFLAGS += $(DEBUG)
 SRC = unity/src/unity.c ../../src/lv_i18n.template.c test.c
 INC_DIR = -I unity/src
 COV_FLAGS = -fprofile-arcs -ftest-coverage
-# our code is in header, additional flags required to collect coverage
-COV_FLAGS += -fno-inline -fno-inline-small-functions -fno-default-inline
 BUILD_DIR = build
 TARGET = build/test.exe
 
@@ -35,7 +33,7 @@ test-coverage:
 	./$(TARGET)
 	rm -rf coverage
 	mkdir -p coverage
-	gcovr --html-details --filter '../../src/' -o coverage/coverage.html
+	~/.local/bin/gcovr --html-details --filter '../../src' -o coverage/index.html
 	rm -rf *.gc*
 
 test-deps:

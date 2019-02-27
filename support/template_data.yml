@@ -1,0 +1,22 @@
+# Demo data for template & C code testing
+
+en-GB:
+  s_untranslated: ~
+  s_en_only: english only
+  s_translated: s translated
+  p_i_have_dogs:
+    one: I have %d dog
+    other: I have %d dogs
+
+ru-RU:
+  s_untranslated: ~
+  s_en_only: ~
+  s_translated: s переведено
+  p_i_have_dogs:
+    one: У меня %d собакен
+    few: У меня %d собакена
+    many: У меня %d собакенов
+    other: ~
+
+# Empty locale to test missed things lookup
+de-DE: {}

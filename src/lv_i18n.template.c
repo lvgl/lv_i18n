@@ -1,49 +1,168 @@
 #include "./lv_i18n.h"
 
-/*-LV_I18N_READY_DATA_INJECT-*/
+/*SAMPLE_START*/
 
-/*-LV_I18N_SAMPLE_DATA_START-*/
+////////////////////////////////////////////////////////////////////////////////
+// Define plural operands
+// http://unicode.org/reports/tr35/tr35-numbers.html#Operands
+
+// Integer version, simplified
+
+static uint32_t __attribute__((unused)) op_n(int32_t val)
+{
+    return (uint32_t)(val < 0 ? -val : val);
+}
+
+static uint32_t __attribute__((unused)) op_i(uint32_t val)
+{
+    return val;
+}
+
+// always zero, when decimal part not exists.
+static uint32_t __attribute__((unused)) op_v(uint32_t val __attribute__((unused)))
+{
+    return 0;
+}
+static uint32_t __attribute__((unused)) op_w(uint32_t val __attribute__((unused)))
+{
+    return 0;
+}
+static uint32_t __attribute__((unused)) op_f(uint32_t val __attribute__((unused)))
+{
+    return 0;
+}
+static uint32_t __attribute__((unused)) op_t(uint32_t val __attribute__((unused)))
+{
+    return 0;
+}
+
+
+
+
 static lv_i18n_phrase_t en_gb_singulars[] = {
-    {"scr1_title", "Title of screen 1"},
-    {"scr1_dsc",   "This is a text on the first screen..."},
-    {NULL, NULL},       /*Mark that there is no more translations*/
+    {"s_en_only", "english only"},
+    {"s_translated", "s translated"},
+    {NULL, NULL} // End mark
 };
+
 
 
 static lv_i18n_phrase_t en_gb_plurals_one[] = {
-    {"dog", "I have only one dog."},
-    {"cat", "My friend has only one cat."},
-    {NULL, NULL},       /*Mark that there is no more translations*/
+    {"p_i_have_dogs", "I have %d dog"},
+    {NULL, NULL} // End mark
 };
 
 
-static lv_i18n_phrase_t en_gb_plurals_many[] = {
-    {"dog", "I already have %d dogs."},
-    {"cat", "My friend already has %d cats."},
-    {NULL, NULL},       /*Mark that there is no more translations*/
+static lv_i18n_phrase_t en_gb_plurals_other[] = {
+    {"p_i_have_dogs", "I have %d dogs"},
+    {NULL, NULL} // End mark
 };
+
 
 
 static uint8_t en_gb_plural_fn(int32_t num)
 {
-    if(num == 1) return LV_I18N_PLURAL_TYPE_ONE;
-    else return LV_I18N_PLURAL_TYPE_MANY;
+    uint32_t n = op_n(num);
+    uint32_t i = op_i(n);
+    uint32_t v = op_v(n);
+
+    if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
+    return LV_I18N_PLURAL_TYPE_OTHER;
 }
+
 
 static const lv_i18n_lang_t en_gb_lang = {
     .locale_name = "en-GB",
     .singulars = en_gb_singulars,
     .plurals[LV_I18N_PLURAL_TYPE_ONE] = en_gb_plurals_one,
-    .plurals[LV_I18N_PLURAL_TYPE_MANY] = en_gb_plurals_many,
-    .locale_plural_fn = en_gb_plural_fn,
+    .plurals[LV_I18N_PLURAL_TYPE_OTHER] = en_gb_plurals_other,
+    .locale_plural_fn = en_gb_plural_fn
 };
+
+
+
+static lv_i18n_phrase_t ru_ru_singulars[] = {
+    {"s_translated", "s переведено"},
+    {NULL, NULL} // End mark
+};
+
+
+
+static lv_i18n_phrase_t ru_ru_plurals_one[] = {
+    {"p_i_have_dogs", "У меня %d собакен"},
+    {NULL, NULL} // End mark
+};
+
+
+static lv_i18n_phrase_t ru_ru_plurals_few[] = {
+    {"p_i_have_dogs", "У меня %d собакена"},
+    {NULL, NULL} // End mark
+};
+
+
+static lv_i18n_phrase_t ru_ru_plurals_many[] = {
+    {"p_i_have_dogs", "У меня %d собакенов"},
+    {NULL, NULL} // End mark
+};
+
+
+
+static uint8_t ru_ru_plural_fn(int32_t num)
+{
+    uint32_t n = op_n(num);
+    uint32_t v = op_v(n);
+    uint32_t i = op_i(n);
+    uint32_t i10 = i % 10;
+    uint32_t i100 = i % 100;
+    if ((v == 0 && i10 == 1 && i100 != 11)) return LV_I18N_PLURAL_TYPE_ONE;
+    if ((v == 0 && (2 <= i10 && i10 <= 4) && (!(12 <= i100 && i100 <= 14)))) return LV_I18N_PLURAL_TYPE_FEW;
+    if ((v == 0 && i10 == 0) || (v == 0 && (5 <= i10 && i10 <= 9)) || (v == 0 && (11 <= i100 && i100 <= 14))) return LV_I18N_PLURAL_TYPE_MANY;
+    return LV_I18N_PLURAL_TYPE_OTHER;
+}
+
+
+static const lv_i18n_lang_t ru_ru_lang = {
+    .locale_name = "ru-RU",
+    .singulars = ru_ru_singulars,
+    .plurals[LV_I18N_PLURAL_TYPE_ONE] = ru_ru_plurals_one,
+    .plurals[LV_I18N_PLURAL_TYPE_FEW] = ru_ru_plurals_few,
+    .plurals[LV_I18N_PLURAL_TYPE_MANY] = ru_ru_plurals_many,
+    .locale_plural_fn = ru_ru_plural_fn
+};
+
+
+
+
+
+
+
+static uint8_t de_de_plural_fn(int32_t num)
+{
+    uint32_t n = op_n(num);
+    uint32_t i = op_i(n);
+    uint32_t v = op_v(n);
+
+    if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
+    return LV_I18N_PLURAL_TYPE_OTHER;
+}
+
+
+static const lv_i18n_lang_t de_de_lang = {
+    .locale_name = "de-DE",
+
+
+    .locale_plural_fn = de_de_plural_fn
+};
+
 
 const lv_i18n_lang_pack_t lv_i18n_language_pack[] = {
     &en_gb_lang,
-    NULL
+    &ru_ru_lang,
+    &de_de_lang,
+    NULL // End mark
 };
 
-/*- LV_I18N_SAMPLE_DATA_END-*/
+/*SAMPLE_END*/
 
 
 // Internal state
