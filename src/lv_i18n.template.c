@@ -36,29 +36,21 @@ static uint32_t __attribute__((unused)) op_t(uint32_t val __attribute__((unused)
     return 0;
 }
 
-
-
-
 static lv_i18n_phrase_t en_gb_singulars[] = {
     {"s_en_only", "english only"},
     {"s_translated", "s translated"},
     {NULL, NULL} // End mark
 };
 
-
-
 static lv_i18n_phrase_t en_gb_plurals_one[] = {
     {"p_i_have_dogs", "I have %d dog"},
     {NULL, NULL} // End mark
 };
 
-
 static lv_i18n_phrase_t en_gb_plurals_other[] = {
     {"p_i_have_dogs", "I have %d dogs"},
     {NULL, NULL} // End mark
 };
-
-
 
 static uint8_t en_gb_plural_fn(int32_t num)
 {
@@ -70,7 +62,6 @@ static uint8_t en_gb_plural_fn(int32_t num)
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
 
-
 static const lv_i18n_lang_t en_gb_lang = {
     .locale_name = "en-GB",
     .singulars = en_gb_singulars,
@@ -79,33 +70,25 @@ static const lv_i18n_lang_t en_gb_lang = {
     .locale_plural_fn = en_gb_plural_fn
 };
 
-
-
 static lv_i18n_phrase_t ru_ru_singulars[] = {
     {"s_translated", "s переведено"},
     {NULL, NULL} // End mark
 };
-
-
 
 static lv_i18n_phrase_t ru_ru_plurals_one[] = {
     {"p_i_have_dogs", "У меня %d собакен"},
     {NULL, NULL} // End mark
 };
 
-
 static lv_i18n_phrase_t ru_ru_plurals_few[] = {
     {"p_i_have_dogs", "У меня %d собакена"},
     {NULL, NULL} // End mark
 };
 
-
 static lv_i18n_phrase_t ru_ru_plurals_many[] = {
     {"p_i_have_dogs", "У меня %d собакенов"},
     {NULL, NULL} // End mark
 };
-
-
 
 static uint8_t ru_ru_plural_fn(int32_t num)
 {
@@ -120,7 +103,6 @@ static uint8_t ru_ru_plural_fn(int32_t num)
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
 
-
 static const lv_i18n_lang_t ru_ru_lang = {
     .locale_name = "ru-RU",
     .singulars = ru_ru_singulars,
@@ -129,12 +111,6 @@ static const lv_i18n_lang_t ru_ru_lang = {
     .plurals[LV_I18N_PLURAL_TYPE_MANY] = ru_ru_plurals_many,
     .locale_plural_fn = ru_ru_plural_fn
 };
-
-
-
-
-
-
 
 static uint8_t de_de_plural_fn(int32_t num)
 {
@@ -146,14 +122,12 @@ static uint8_t de_de_plural_fn(int32_t num)
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
 
-
 static const lv_i18n_lang_t de_de_lang = {
     .locale_name = "de-DE",
 
 
     .locale_plural_fn = de_de_plural_fn
 };
-
 
 const lv_i18n_lang_pack_t lv_i18n_language_pack[] = {
     &en_gb_lang,
