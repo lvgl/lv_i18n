@@ -165,23 +165,75 @@ void test_empty_base_tables_fallback(void)
     };
 
     lv_i18n_init(fake_language_pack);
-
-    lv_i18n_set_locale("en-GB");
     TEST_ASSERT_EQUAL_STRING(_("not existing"), "not existing");
     lv_i18n_set_locale("ru-RU");
     TEST_ASSERT_EQUAL_STRING(_("not existing"), "not existing");
 
     lv_i18n_init(fake_language_pack);
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 1), "not_existing");
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 2), "not_existing");
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 5), "not_existing");
-
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 1), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 2), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 5), "not existing");
     lv_i18n_set_locale("ru-RU");
-    // Lines below cause fail
-    TEST_IGNORE();
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 1), "not_existing");
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 2), "not_existing");
-    TEST_ASSERT_EQUAL_STRING(_p("not_existing", 5), "not_existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 1), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 2), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 5), "not existing");
+}
+
+
+void test_empty_plurals_fallback(void)
+{
+    static const lv_i18n_lang_t en_gb_lang = {
+        .locale_name = "en-GB",
+        .locale_plural_fn = NULL
+    };
+
+    static const lv_i18n_lang_t ru_ru_lang = {
+        .locale_name = "ru-RU",
+        .locale_plural_fn = NULL
+    };
+
+    const lv_i18n_lang_pack_t fake_language_pack[] = {
+        &en_gb_lang,
+        &ru_ru_lang,
+        NULL
+    };
+
+    lv_i18n_init(fake_language_pack);
+    TEST_ASSERT_EQUAL_STRING(_("not existing"), "not existing");
+    lv_i18n_set_locale("ru-RU");
+    TEST_ASSERT_EQUAL_STRING(_("not existing"), "not existing");
+
+    lv_i18n_init(fake_language_pack);
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 1), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 2), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 5), "not existing");
+    lv_i18n_set_locale("ru-RU");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 1), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 2), "not existing");
+    TEST_ASSERT_EQUAL_STRING(_p("not existing", 5), "not existing");
+}
+
+void test_empty_content_check(void)
+{
+    static lv_i18n_phrase_t en_gb_singulars[] = {
+        {"s_empty", NULL},
+        {NULL, NULL} // End mark
+    };
+
+    static const lv_i18n_lang_t en_gb_lang = {
+        .locale_name = "en-GB",
+        .singulars = en_gb_singulars,
+        .locale_plural_fn = fake_plural_fn
+    };
+
+    const lv_i18n_lang_pack_t fake_language_pack[] = {
+        &en_gb_lang,
+        NULL
+    };
+
+    lv_i18n_init(fake_language_pack);
+
+    TEST_ASSERT_EQUAL_STRING(_("s_empty"), "s_empty");
 }
 
 
@@ -215,6 +267,8 @@ int main(void)
     // Other
     RUN_TEST(test_should_fallback_without_langpack);
     RUN_TEST(test_empty_base_tables_fallback);
+    RUN_TEST(test_empty_plurals_fallback);
+    RUN_TEST(test_empty_content_check);
 
     return UNITY_END();
 }

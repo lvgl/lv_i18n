@@ -239,28 +239,25 @@ const char * lv_i18n_get_text(const char * msg_id)
     if(current_lang == NULL) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
+    const void * txt;
 
-    if(lang->singulars == NULL) {
-        if(lang == current_lang_pack[0]) return msg_id;
-        else lang = current_lang_pack[0];
-
-        if(lang->singulars == NULL) return msg_id;
+    // Search in current locale
+    if(lang->singulars != NULL) {
+        txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
+        if (txt != NULL) return txt;
     }
 
-    /*Find the translation*/
-    const void * txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
-    if(txt == NULL) {
-        if(lang == current_lang_pack[0]) return msg_id;
-        else lang = current_lang_pack[0];
+    // Try to fallback
+    if(lang == current_lang_pack[0]) return msg_id;
+    lang = current_lang_pack[0];
+
+    // Repeat search for default locale
+    if(lang->singulars != NULL) {
+        txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
+        if (txt != NULL) return txt;
     }
 
-    /*Try again with the default language*/
-    if(lang->singulars == NULL) return msg_id;
-
-    txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
-    if(txt == NULL) return msg_id;
-
-    return txt;
+    return msg_id;
 }
 
 /**
@@ -274,39 +271,34 @@ const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
     if(current_lang == NULL) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
-    if(lang->plurals == NULL || lang->locale_plural_fn == NULL) {
-        if(lang == current_lang_pack[0]) return msg_id;
-        else lang = current_lang_pack[0];
+    const void * txt;
+    lv_i18n_plural_type_t ptype;
 
-        if(lang->plurals == NULL) return msg_id;
+    // Search in current locale
+    if(lang->locale_plural_fn != NULL) {
+        ptype = lang->locale_plural_fn(num);
+
+        if(lang->plurals[ptype] != NULL) {
+            txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
+            if (txt != NULL) return txt;
+        }
     }
 
-    lv_i18n_plural_type_t ptype = lang->locale_plural_fn(num);
+    // Try to fallback
+    if(lang == current_lang_pack[0]) return msg_id;
+    lang = current_lang_pack[0];
 
-    if(lang->plurals[ptype] == NULL) {
-        if(lang == current_lang_pack[0]) return msg_id;
-        else lang = current_lang_pack[0];
+    // Repeat search for default locale
+    if(lang->locale_plural_fn != NULL) {
+        ptype = lang->locale_plural_fn(num);
+
+        if(lang->plurals[ptype] != NULL) {
+            txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
+            if (txt != NULL) return txt;
+        }
     }
 
-    /*Find the translation*/
-    const void * txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
-    if(txt == NULL) {
-        if(lang == current_lang_pack[0]) return msg_id;
-        else lang = current_lang_pack[0];
-    }
-
-    /*Try again with the default language*/
-    if(lang->plurals == NULL || lang->locale_plural_fn == NULL) return msg_id;
-
-    ptype = lang->locale_plural_fn(num);
-
-    if(lang->plurals[ptype] == NULL) return msg_id;
-
-    txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
-
-    if(txt == NULL) return msg_id;
-
-    return txt;
+    return msg_id;
 }
 
 /**
