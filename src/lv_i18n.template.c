@@ -8,31 +8,37 @@
 
 // Integer version, simplified
 
-static uint32_t __attribute__((unused)) op_n(int32_t val)
+#define UNUSED(x) (void)(x)
+
+static inline uint32_t op_n(int32_t val)
 {
     return (uint32_t)(val < 0 ? -val : val);
 }
 
-static uint32_t __attribute__((unused)) op_i(uint32_t val)
+static inline uint32_t op_i(uint32_t val)
 {
     return val;
 }
 
 // always zero, when decimal part not exists.
-static uint32_t __attribute__((unused)) op_v(uint32_t val __attribute__((unused)))
+static inline uint32_t op_v(uint32_t val)
 {
+    UNUSED(val);
     return 0;
 }
-static uint32_t __attribute__((unused)) op_w(uint32_t val __attribute__((unused)))
+static inline uint32_t op_w(uint32_t val)
 {
+    UNUSED(val);
     return 0;
 }
-static uint32_t __attribute__((unused)) op_f(uint32_t val __attribute__((unused)))
+static inline uint32_t op_f(uint32_t val)
 {
+    UNUSED(val);
     return 0;
 }
-static uint32_t __attribute__((unused)) op_t(uint32_t val __attribute__((unused)))
+static inline uint32_t op_t(uint32_t val)
 {
+    UNUSED(val);
     return 0;
 }
 
@@ -55,8 +61,11 @@ static lv_i18n_phrase_t en_gb_plurals_other[] = {
 static uint8_t en_gb_plural_fn(int32_t num)
 {
     uint32_t n = op_n(num);
+    UNUSED(n);
     uint32_t i = op_i(n);
+    UNUSED(i);
     uint32_t v = op_v(n);
+    UNUSED(v);
 
     if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
     return LV_I18N_PLURAL_TYPE_OTHER;
@@ -93,8 +102,11 @@ static lv_i18n_phrase_t ru_ru_plurals_many[] = {
 static uint8_t ru_ru_plural_fn(int32_t num)
 {
     uint32_t n = op_n(num);
+    UNUSED(n);
     uint32_t v = op_v(n);
+    UNUSED(v);
     uint32_t i = op_i(n);
+    UNUSED(i);
     uint32_t i10 = i % 10;
     uint32_t i100 = i % 100;
     if ((v == 0 && i10 == 1 && i100 != 11)) return LV_I18N_PLURAL_TYPE_ONE;
@@ -115,8 +127,11 @@ static const lv_i18n_lang_t ru_ru_lang = {
 static uint8_t de_de_plural_fn(int32_t num)
 {
     uint32_t n = op_n(num);
+    UNUSED(n);
     uint32_t i = op_i(n);
+    UNUSED(i);
     uint32_t v = op_v(n);
+    UNUSED(v);
 
     if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
     return LV_I18N_PLURAL_TYPE_OTHER;
