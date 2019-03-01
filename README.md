@@ -35,11 +35,28 @@ const char* mytext = _("my text to translate");
 const char* my_plural_text = _p("my text to translate", number);
 ```
 
-CLI tools install ([node.js](https://nodejs.org/en/download/) required):
+CLI tools install
+-----------------
+
+[node.js](https://nodejs.org/en/download/) required.
 
 ```sh
-npm install -g lv_i18n
+# "global" install of last version, execute as "lv_i18n"
+npm i lv_i18n -g
+# install from github's repo, master branch
+npm i littlevgl/lv_i18n -g
 ```
+
+If you wish local install for your project, do in project root:
+
+```sh
+npm init private
+npm i lv_i18n -s
+# now available at ./node_modules/.bin/lv_i18n
+```
+
+Then commit `package.json` & put `/node_modules` into `.gitignore`. Next time
+use just `npm i` to install.
 
 
 Translation workflow
