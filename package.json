@@ -6,7 +6,7 @@
     "i18n",
     "internationalization"
   ],
-  "repository": "lvgl/lv_i18n",
+  "repository": "littlevgl/lv_i18n",
   "license": "MIT",
   "files": [
     "lv_i18n.js",
