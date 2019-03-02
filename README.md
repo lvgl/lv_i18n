@@ -6,8 +6,6 @@ lv_i18n - Internationalization for LittlevGL
 
 > Translate your firmware with ease!
 
-**Work in progress**
-
 Usage example
 -------------
 
