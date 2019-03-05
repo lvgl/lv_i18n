@@ -150,10 +150,15 @@ lv_i18n compile -h
 Examples:
 
 ```sh
-lv_i18n extract -s 'src/**.+(c|cpp|h|hpp)' -s inc/** -t src/i18n/*.yml
+lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -s inc/**/* -t src/i18n/*.yml
 lv_i18n compile -t src/i18n/*.yml -o src/translations.c
 lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 ```
+
+[Glob expressions](https://github.com/isaacs/node-glob#glob-primer) supported.
+
+Note for Windows: use *only forward-slashes* in glob expressions.
+
 
 Translation files format
 ------------------------
