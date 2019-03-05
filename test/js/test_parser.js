@@ -31,6 +31,23 @@ describe('Parser', function () {
     );
   });
 
+  it('Should find scoped singular', function () {
+    assert.deepEqual(
+      parse(`
+        printf(_("msgid1"));
+      `),
+      [
+        {
+          key: 'msgid1',
+          line: 2,
+          plural: false
+        }
+      ]
+    );
+  });
+
+
+
   it('Should find plurals', function () {
     assert.deepEqual(
       parse(`
