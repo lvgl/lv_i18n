@@ -42,7 +42,7 @@ use just `npm i` to install.
 
 
 
-## Usage example - Mark up the text in your code
+## Mark up the text in your code
 ```c
 #include "translations.h"
 
