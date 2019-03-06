@@ -85,26 +85,13 @@ Add the `'language-code': ~` line to the `yml` files. Replace "language-code" wi
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them. 
 
 ## Run the extract script to fill the yml files
-Run the `extract` script like this (assuming your source files are in the `src` folder an the `yml` files in the translatiosn folder): 
+Run the `extract` script like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder): 
 ```sh
 lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
 ```
 
 It will fill the `yml` files the texts marked with `_` and  `_p`.
 For example:
-```yml
-'en-GB':
-  title1: Main menu
-  user_logged_in:
-    one: One user is logged in
-    other: %d users are logged in
-```
-
-## Add the translations into the yml files
-
-The naming conventions in the `yml` files follow the rules of [CLDR](http://cldr.unicode.org/translation/language-names) so most of the translation offices will know them.
-
-Example:
 ```yml
 en-GB:
   title1: ~
@@ -113,6 +100,18 @@ en-GB:
     other: ~
 ```
 
+## Add the translations into the yml files
+
+The naming conventions in the `yml` files follow the rules of [CLDR](http://cldr.unicode.org/translation/language-names) so most of the translation offices will know them.
+
+Example:
+```yml
+'en-GB':
+  title1: Main menu
+  user_logged_in:
+    one: One user is logged in
+    other: %d users are logged in
+```
 ## Run the compile script to convert the yml files to a C and H file
 
 Once you have the translations in the `yml` files you only need to run the `compile` script to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
