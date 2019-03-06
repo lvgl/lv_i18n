@@ -4,7 +4,7 @@ lv_i18n - Internationalization for LittlevGL
 [![Build Status](https://img.shields.io/travis/littlevgl/lv_i18n/master.svg?style=flat)](https://travis-ci.org/littlevgl/lv_i18n)
 [![NPM version](https://img.shields.io/npm/v/lv_i18n.svg?style=flat)](https://www.npmjs.org/package/lv_i18n)
 
-Lightweighted internationalization (text translation) tool for C applications. It extracts the texts to translate from the C source files into `yml` files where you can add the translations and generate a C file with the translations. Language-specific plural forms are supported.  
+Lightweighted internationalization (text translation) tool for C applications. It extracts the texts -to-translate from the C source files into `yml` files where you can add the translations and generate a C file with the translations. Language-specific plural forms are supported.  
 
 ## Quick overview
 1. Mark up the text in your C files as `_("some text")` (singular) and `_p("%d item", item_cnt)` (plural)
