@@ -4,44 +4,28 @@ lv_i18n - Internationalization for LittlevGL
 [![Build Status](https://img.shields.io/travis/littlevgl/lv_i18n/master.svg?style=flat)](https://travis-ci.org/littlevgl/lv_i18n)
 [![NPM version](https://img.shields.io/npm/v/lv_i18n.svg?style=flat)](https://www.npmjs.org/package/lv_i18n)
 
-> Translate your firmware with ease!
+Lightweighted internationalization (text translation) tool for C applications. It extracts the text to translate from the C source files to `yml` files where you can add the translations and generate a C file with the translations. Language-specific plural forms are supported.  
 
-Usage example
--------------
+## Quick overview
+1. Mark up the text in your C files as `_("some text")` (singular) and `_p("%d item", item_cnt)` (plural)
+2. Create template `yml` files for the translations you are interested in
+3. Run the `extract` script to fill the `yml` files with the texts in `_()` and `_p()`
+4. Add the translations into the `yml` files
+5. Run the `compile` script to convert the `yml` files to a C and H file. They will contain the translations and all the background functions you need.
 
-Translations compiler will give you 2 files (`lv_i18n.h` & `lv_i18n.c`) for use
-in your program. Those include everything you need and not require additional
-libraries.
-
-Initialize i18n module, somewhere in your code:
-
-```c
-#include "lv_i18n.h"
-
-// Load translations & default locale (usually, done once)
-lv_i18n_init(lv_i18n_lang_pack);
-// Set active locale (can be switched anytime)
-lv_i18n_set_locale("ru-RU");
-```
-
-Then, in all your sources:
-
-```c
-#include "lv_i18n.h"
-
-const char* mytext = _("my text to translate");
-const char* my_plural_text = _p("my text to translate", number);
-```
-
-CLI tools install
------------------
+## Install the script
 
 [node.js](https://nodejs.org/en/download/) required.
 
+Global install of the last version, execute as "lv_i18n"
 ```sh
-# "global" install of last version, execute as "lv_i18n"
 npm i lv_i18n -g
-# install from github's repo, master branch
+```
+
+**Alternatives**
+
+Install from github's repo, master branch
+```sh
 npm i littlevgl/lv_i18n -g
 ```
 
@@ -57,26 +41,91 @@ Then commit `package.json` & put `/node_modules` into `.gitignore`. Next time
 use just `npm i` to install.
 
 
-Translation workflow
---------------------
 
-Here are simplified steps:
+## Usage example - Mark up the text in your code
+```c
+#include "translations.h"
 
-- Wrap texts in your code with `_()` and `_p()` wrappers. Without
-  translations your program will continue work "as is", returning wrapped texts.
-- Anytime, run "extractor" to analyze existing code, translations, and fill
-  translation files with texts to translate.
-- Translate (edit `.yml` files, replace `~` with translated texts).
-- Run "compiler" to generate `lv_i18n.h` & `lv_i18n.c` files,then rebuild your
-  program
+/* Load translations & default locale (usually, done once) */
+lv_i18n_init(lv_i18n_lang_pack);
 
-If you change base phrases in source code, their existing translations become
-"lost". CLI tools allow search such phrases, and "rename" or remove keys in all
-translation at once, to minimize handwork.
+/* Set active locale (can be switched anytime) */
+lv_i18n_set_locale("ru-RU");
 
+/* The translation of "title1" will be read returned according to the selected local.
+ * ("title1" is only a uniqu ID of the text.) Example:
+ * en-GB: "Main menu"
+ * ru_RU: "главное меню"
+ */
+gui_set_text(label, _("title1"));
 
-C API
------
+/* According to `user_cnt` different text can be returned
+ * en-GB `user_cnt == 1` : "One user is logged in"
+ *        `user_cnt == 6` : "%d users are logged in"  
+ */
+char buf[64];
+sprintf(buf, _p("user_logged_in", user_cnt)), user_cnt);  /*E.g. buf == "7 users are logged in"*/
+gui_set_text(label, buf);
+```
+
+`_` and `_p` are normal functions. They just have this short name to enable fast typing of texts.
+
+**Rules of getting the translation**
+- If the translation is not available on the selected local then the default language will be used instead
+- If the translation is not available on the default local the text ID ("title1" in the example) will be returned
+
+## Create template yml files for the translations
+For each translation, you need to create a `yml` file with "language code" name. For example:
+- en-GB.yml
+- ru-RU.yml
+TODO link to the language code list
+
+Add the `'language-code': ~` line to the `yml` files. Replace "language-code" with the actual language code. E.g.: `'en-GB': ~`
+
+Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them. 
+
+## Run the extract script to fill the yml files
+Run the `extract` script like this (assuming your source files are in the `src` folder an the `yml` files in the translatiosn folder): 
+```sh
+lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
+```
+
+It will fill the `yml` files the texts marked with `_` and  `_p`.
+For example:
+```yml
+'en-GB':
+  title1: Main menu
+  user_logged_in:
+    one: One user is logged in
+    other: %d users are logged in
+```
+
+## Add the translations into the yml files
+
+The naming conventions in the `yml` files follow the rules of [CLDR](http://cldr.unicode.org/translation/language-names) so most of the translation offices will know them.
+
+Example:
+```yml
+en-GB:
+  title1: ~
+  user_logged_in:
+    one: ~
+    other: ~
+```
+
+## Run the compile script to convert the yml files to a C and H file
+
+Once you have the translations in the `yml` files you only need to run the `compile` script to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
+
+Running the `compile` script
+```sh
+lv_i18n compile -t 'translations/*.yml' -o src/translations.c
+```
+
+## Follow modifications in the source code
+TODO
+
+## C API
 
 ### int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
 
@@ -107,108 +156,11 @@ first, then input param if default not exists)
 
 Mapped to `_p(...)` or `_tp(...)` via `#define`
 
-Get plural form of translated text. Use current local to select proper plural
-algorythm. If not translated, fallback to default locale first, then to input
+Get the plural form of translated text. Use current local to select proper plural
+algorithm. If not translated, fallback to default locale first, then to input
 param.
 
-
-### CLI tools
-
-CLI tools are used to simplify translation process and generate `.c` file with
-optimized data. Utilities are written in JS and require
-[node.js](https://nodejs.org/en/download/) to work. After node.js been
-installed, type this:
-
-```sh
-npm install -g lv_i18n
-```
-
-This will install utilities and create shourtcut `lv_i18n` to call from terminal.
-You can also use local install and type explicit path to `lv_i18n.js`:
-
-```sh
-npm install lv_i18n
-```
-
-All "actions" use similar pattern:
-
-- Load source C/CPP files and extract phrases.
-- Load yaml translations to understand existing progress.
-- Do something useful (command):
-  - Fill yaml files with new phrases to translate
-  - Check errors and inconsistencies
-  - Generate ("compile") `.c` file with optimized translation data.
-
-See help:
-
-```sh
-lv_i18n -h
-lv_i18n extract -h
-lv_i18n compile -h
-```
-
-Examples:
-
-```sh
-lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -s inc/**/* -t src/i18n/*.yml
-lv_i18n compile -t src/i18n/*.yml -o src/translations.c
-lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
-```
-
-[Glob expressions](https://github.com/isaacs/node-glob#glob-primer) supported.
-
-Note for Windows: use *only forward-slashes* in glob expressions.
-
-
-Translation files format
-------------------------
-
-Translations are stored in `.yaml` (or `.json`) files. Structure is similar to
-one in [Ruby on Rails](https://guides.rubyonrails.org/i18n.html), with minor
-simplifications:
-
-```yaml
-# Default locale
-'en-GB':
-  # May be useful if shortcuts used instead of real texts.
-  # For example: `msg_file_missed`. When real texts used, default locale
-  # doesn't need translation for singular phrases (leave "null" here)
-  Settings: ~
-  # Plurals - should be filled
-  Nut:
-    # Valid plural form names are `zero`, `one`, `two`, `few`, `many`, `other`
-    # Each language has specific set of required forms.
-    one: Nut
-    many: Nuts
-  'LVGL is awesome!': ~
-
-# Example of additional locale. Usually, placed to separate file.
-'ru-RU':
-  Settings: Настройки
-  Nut:
-    one: Гайка
-    few: Гайки
-    many: Гаек
-  'LVGL is awesome!': ~ # null (still untranslated), added by extractor
-```
-
-- No nesting subtrees, `foo.bar.baz` will be just a plain string
-
-It's possible to store everything in one file, but we strongly recommend keep
-each locale in separate one. When you run CLI tools and pass multiple
-files, all data will be joined automatically.
-
-If you wish add new locale - just create a new file with this content:
-
-```yaml
-your_new_locale_name: ~
-```
-
-Then run extractor to fill missed keys.
-
-
-References:
------------
+## References:
 
 To understand i18n principles better, you may find useful links below:
 
