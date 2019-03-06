@@ -80,7 +80,8 @@ For each translation, you need to create a `yml` file with "language code" name.
 - ru-RU.yml
 TODO link to the language code list
 
-Add the `'language-code': ~` line to the `yml` files. Replace "language-code" with the actual language code. E.g.: `'en-GB': ~`
+Add the `'language-code': ~` line to the `yml` files. Replace "language-code" with the actual language code.   
+E.g.: `'en-GB': ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them. 
 
@@ -118,7 +119,7 @@ Once you have the translations in the `yml` files you only need to run the `comp
 
 Running the `compile` script
 ```sh
-lv_i18n compile -t 'translations/*.yml' -o src/translations.c
+lv_i18n compile -t 'translations/*.yml' -o 'src/translations.c'
 ```
 
 ## Follow modifications in the source code
