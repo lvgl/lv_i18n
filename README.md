@@ -86,7 +86,7 @@ E.g.: `en-GB: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them. 
 
-## Run the extract script to fill the yml files
+## Run extract to fill the yml files
 Run `extract` like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder): 
 ```sh
 lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
@@ -114,9 +114,9 @@ Example:
     one: One user is logged in
     other: %d users are logged in
 ```
-## Run the compile script to convert the yml files to a C and H file
+## Run compile to convert the yml files to a C and H file
 
-Once you have the translations in the `yml` files you only need to run the `compile` script to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
+Once you have the translations in the `yml` files you only need to run the `compile` to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
 
 Running `compile`:
 ```sh
