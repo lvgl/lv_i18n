@@ -4,14 +4,15 @@ lv_i18n - Internationalization for LittlevGL
 [![Build Status](https://img.shields.io/travis/littlevgl/lv_i18n/master.svg?style=flat)](https://travis-ci.org/littlevgl/lv_i18n)
 [![NPM version](https://img.shields.io/npm/v/lv_i18n.svg?style=flat)](https://www.npmjs.org/package/lv_i18n)
 
-Lightweighted internationalization (text translation) tool for C applications. It extracts the texts -to-translate from the C source files into `yml` files where you can add the translations and generate a C file with the translations. Language-specific plural forms are supported.  
+Lightweighted `gettext` replacment tools for C which makes easy add multi-language support to you appication. ...something about plural support... Suitable for embedded applications too. 
+
 
 ## Quick overview
 1. Mark up the text in your C files as `_("some text")` (singular) and `_p("%d item", item_cnt)` (plural)
 2. Create template `yml` files for the translations you are interested in
-3. Run the `extract` script to fill the `yml` files with the texts in `_()` and `_p()`
+3. Run `extract` to fill the `yml` files with the texts in `_()` and `_p()`
 4. Add the translations into the `yml` files
-5. Run the `compile` script to convert the `yml` files to a C and H file. They will contain the translations and all the background functions you need.
+5. Run `compile` to convert the `yml` files to a C and H file. They will contain the translations and all the background functions you need.
 
 ## Install the script
 
@@ -22,7 +23,7 @@ Global install of the last version, execute as "lv_i18n"
 npm i lv_i18n -g
 ```
 
-**Alternatives**
+**Alternatives:**
 
 Install from github's repo, master branch
 ```sh
@@ -44,7 +45,7 @@ use just `npm i` to install.
 
 ## Mark up the text in your code
 ```c
-#include "translations.h"
+#include "lv_i18n/lv_i18n.h"  /*Assuming you have the translations here. (See below)*/
 
 /* Load translations & default locale (usually, done once) */
 lv_i18n_init(lv_i18n_lang_pack);
@@ -70,7 +71,7 @@ gui_set_text(label, buf);
 
 `_` and `_p` are normal functions. They just have this short name to enable fast typing of texts.
 
-**Rules of getting the translation**
+Rules of getting the translation:
 - If the translation is not available on the selected local then the default language will be used instead
 - If the translation is not available on the default local the text ID ("title1" in the example) will be returned
 
@@ -80,13 +81,13 @@ For each translation, you need to create a `yml` file with "language code" name.
 - ru-RU.yml
 TODO link to the language code list
 
-Add the `'language-code': ~` line to the `yml` files. Replace "language-code" with the actual language code.   
-E.g.: `'en-GB': ~`
+Add the `language-code: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
+E.g.: `en-GB: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them. 
 
 ## Run the extract script to fill the yml files
-Run the `extract` script like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder): 
+Run `extract` like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder): 
 ```sh
 lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
 ```
@@ -117,10 +118,12 @@ Example:
 
 Once you have the translations in the `yml` files you only need to run the `compile` script to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
 
-Running the `compile` script
+Running `compile`:
 ```sh
-lv_i18n compile -t 'translations/*.yml' -o 'src/translations.c'
+lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n
 ```
+
+The deafult local is `en-GB` but you change it with `-l 'language-code'`.
 
 ## Follow modifications in the source code
 TODO
