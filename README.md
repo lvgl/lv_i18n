@@ -145,41 +145,39 @@ The deafult local is `en-GB` but you change it with `-l 'language-code'`.
 
 TODO
 
-
 ## C API
 
+#### int lv_i18n_init(const lv_i18n_lang_pack_t * langs) 
+Attach generated translations to be used by `lv_i18n_get_text()`. 
 
-### int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
-
-Attach generated translations to be used by `lv_i18n_get_text()`. Return 0
-on success, -1 on fail.
-
-
-### int lv_i18n_set_locale(const char * l_name)
-
-Set locale to be used by `lv_i18n_get_text()`.
-
-- _l_name_ - locale name (`en-GB`, `ru-RU`). You can use language codes only
-  (`en`, `ru`) instead.
-
-Returns 0 on success, -1 if locale not found.
+- _return_ - 0 on success, -1 on fail. 
 
 
-### const char * lv_i18n_get_text(const char * msg_id)
+#### int lv_i18n_set_locale(const char * l_name)
+Set locale to be used by `lv_i18n_get_text()`.  
 
-Mapped to `_(...)` or `_t(...)` via `#define`
+- _l_name_ - locale name (`en-GB`, `ru-RU`). You can use language codes only (`en`, `ru`) instead.
+- _returns_ - 0 on success, -1 if locale not found.
+
+#### const char * lv_i18n_get_text(const char * msg_id)
+Mapped to `_(...)` or `_t(...)` via `#define`  
 
 Get translated text. If not translated, return fallback (try default locale
-first, then input param if default not exists)
 
+first, then input param if default not exists)  
+- _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
+- _return_ - pointer to the praslation  
 
-### char* lv_i18n_get_text_plural(char* text, int32_t plural)
-
+#### char* lv_i18n_get_text_plural(char* msg_id, int32_t plural)
 Mapped to `_p(...)` or `_tp(...)` via `#define`
 
 Get the plural form of translated text. Use current locale to select plural
 algorithm. If not translated, fallback to default locale first, then to input
 param.
+
+- _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
+- _plural_ - number of items to decide which plural for to use  
+- _return_ - pointer to the praslation  
 
 
 ## References:
