@@ -165,8 +165,7 @@ ___
 #### const char * lv_i18n_get_text(const char * msg_id)
 Mapped to `_(...)` or `_t(...)` via `#define`  
 
-Get translated text. If not translated, return fallback (try default locale
-
+Get translated text. If not translated, return fallback (try default locale 
 first, then input param if default not exists)  
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
 - _return_ - pointer to the praslation  
