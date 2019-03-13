@@ -88,7 +88,7 @@ For each translation, you need to create a `yml` file with "language code" name.
 - en-GB.yml
 - ru-RU.yml
 
-TODO link to the language code list
+Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and local codes.
 
 Add the `\<language-code\>: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
 E.g.: `en-GB: ~`
