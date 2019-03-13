@@ -152,12 +152,15 @@ Attach generated translations to be used by `lv_i18n_get_text()`.
 
 - _return_ - 0 on success, -1 on fail. 
 
+___
 
 #### int lv_i18n_set_locale(const char * l_name)
 Set locale to be used by `lv_i18n_get_text()`.  
 
 - _l_name_ - locale name (`en-GB`, `ru-RU`). You can use language codes only (`en`, `ru`) instead.
 - _returns_ - 0 on success, -1 if locale not found.
+
+___
 
 #### const char * lv_i18n_get_text(const char * msg_id)
 Mapped to `_(...)` or `_t(...)` via `#define`  
@@ -167,6 +170,8 @@ Get translated text. If not translated, return fallback (try default locale
 first, then input param if default not exists)  
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
 - _return_ - pointer to the praslation  
+
+___
 
 #### char* lv_i18n_get_text_plural(char* msg_id, int32_t plural)
 Mapped to `_p(...)` or `_tp(...)` via `#define`
@@ -178,7 +183,6 @@ param.
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
 - _plural_ - number of items to decide which plural for to use  
 - _return_ - pointer to the praslation  
-
 
 ## References:
 
