@@ -168,7 +168,7 @@ Mapped to `_(...)` or `_t(...)` via `#define`
 Get translated text. If not translated, return fallback (try default locale 
 first, then input param if default not exists)  
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
-- _return_ - pointer to the praslation  
+- _return_ - pointer to the traslation  
 
 ___
 
@@ -181,7 +181,7 @@ param.
 
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
 - _plural_ - number of items to decide which plural for to use  
-- _return_ - pointer to the praslation  
+- _return_ - pointer to the traslation  
 
 ## References:
 
