@@ -142,8 +142,10 @@ lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n'
 The deafult local is `en-GB` but you change it with `-l 'language-code'`.
 
 ## Follow modifications in the source code
-
-TODO
+To change a text id in the `yml` files use:
+```sh
+lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
+```
 
 ## C API
 
