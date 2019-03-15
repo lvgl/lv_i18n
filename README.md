@@ -58,7 +58,7 @@ lv_i18n_init(lv_i18n_lang_pack);
 /* Set active locale (can be switched anytime) */
 lv_i18n_set_locale("ru-RU");
 
-/* The translation of "title1" will be returned according to the selected local.
+/* The translation of "title1" will be returned according to the selected locale.
  * ("title1" is only a uniqu ID of the text.) Example:
  * en-GB: "Main menu"
  * ru_RU: "Главное меню"
@@ -77,8 +77,8 @@ gui_set_text(label, buf);
 `_` and `_p` are normal functions. They just have this short name to enable fast typing of texts.
 
 Rules of getting the translation:
-- If the translation is not available on the selected local then the default language will be used instead
-- If the translation is not available on the default local the text ID ("title1" in the example) will be returned
+- If the translation is not available on the selected locale then the default language will be used instead
+- If the translation is not available on the default locale the text ID ("title1" in the example) will be returned
 
 
 ## Create template yml files for the translations
@@ -88,9 +88,9 @@ For each translation, you need to create a `yml` file with "language code" name.
 - en-GB.yml
 - ru-RU.yml
 
-Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and local codes.
+Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and locale codes.
 
-Add the `\<language-code\>: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
+Add the `\<locale-name\>: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
 E.g.: `en-GB: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them.
@@ -139,7 +139,7 @@ Running `compile`:
 lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n'
 ```
 
-The deafult local is `en-GB` but you change it with `-l 'language-code'`.
+The deafult locale is `en-GB` but you change it with `-l 'language-code'`.
 
 ## Follow modifications in the source code
 To change a text id in the `yml` files use:
