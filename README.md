@@ -91,7 +91,7 @@ For each translation, you need to create a `yml` file with "language code" name.
 Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and locale codes.
 
 Add the `\<locale-name\>: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
-E.g.: `en-GB: ~`
+E.g.: `en-GB: ~` or simply `en: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them.
 
@@ -159,7 +159,7 @@ ___
 #### int lv_i18n_set_locale(const char * l_name)
 Set locale to be used by `lv_i18n_get_text()`.  
 
-- _l_name_ - locale name (`en-GB`, `ru-RU`). You can use language codes only (`en`, `ru`) instead.
+- _l_name_ - locale name (`en-GB`, `ru-RU`).
 - _returns_ - 0 on success, -1 if locale not found.
 
 ___
