@@ -17,7 +17,7 @@ tools for C. Add multi-language support to your embedded projects with ease.
 5. Run `compile` to convert the `yml` files to a C and H file. They will contain the translations and all the background functions you need.
 
 
-## Install the script
+## Install/run the script
 
 [node.js](https://nodejs.org/en/download/) required.
 
@@ -45,6 +45,18 @@ npm i lv_i18n -s
 
 Then commit `package.json` & put `/node_modules` into `.gitignore`. Next time
 use just `npm i` to install.
+
+**run via [npx](https://www.npmjs.com/package/npx)**
+
+`node.js` has built-in [npx](https://www.npmjs.com/package/npx) utility to
+execute packages "without install":
+
+```sh
+# run from github master
+npx github:littlevgl/lv_i18n -h
+# run from npm registry
+npx lv_i18n -h
+```
 
 
 ## Mark up the text in your code
@@ -149,10 +161,10 @@ lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 
 ## C API
 
-#### int lv_i18n_init(const lv_i18n_lang_pack_t * langs) 
-Attach generated translations to be used by `lv_i18n_get_text()`. 
+#### int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
+Attach generated translations to be used by `lv_i18n_get_text()`.
 
-- _return_ - 0 on success, -1 on fail. 
+- _return_ - 0 on success, -1 on fail.
 
 ___
 
@@ -167,7 +179,7 @@ ___
 #### const char * lv_i18n_get_text(const char * msg_id)
 Mapped to `_(...)` or `_t(...)` via `#define`  
 
-Get translated text. If not translated, return fallback (try default locale 
+Get translated text. If not translated, return fallback (try default locale
 first, then input param if default not exists)  
 - _msg_id_ - The ID of a text to translate (e.g. `"title1"`)  
 - _return_ - pointer to the traslation  
