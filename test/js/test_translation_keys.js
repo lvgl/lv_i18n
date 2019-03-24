@@ -76,6 +76,21 @@ describe('TranslationKeys', function () {
         }
       });
     });
+
+    it('Should throw on homoglyph locales occurence', function () {
+      let tk = new TranslationKeys();
+
+      assert.throws(
+        () => tk.loadText("{ 'en-GB': {}, 'en-gb': {} }", 'test.yml'),
+        /was already defined/
+      );
+
+      assert.throws(
+        () => tk.loadText("{ 'en-GB': {}, 'en_GB': {} }", 'test.yml'),
+        /was already defined/
+      );
+
+    });
   });
 
   describe('Phrases', function () {
