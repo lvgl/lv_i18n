@@ -39,14 +39,33 @@ describe('CLI compile', function () {
     );
   });
 
-  it('Should fail on missed base locale', function () {
+  it('Should fail on not specified and not autodetected base locale', function () {
     assert.throws(
       () => {
         run([ 'compile', '-t', join(fixtures_tmp_dir, 'no_base.yml'), '--raw', '123' ]);
       },
-      /Default locale is .*, but it was not found in loaded translations/
+      /You did not specified locale/
     );
   });
+
+  it('Should fail on missed base locale', function () {
+    assert.throws(
+      () => {
+        run([ 'compile', '-t', join(fixtures_tmp_dir, 'no_base.yml'), '-l', 'en', '--raw', '123' ]);
+      },
+      /You specified base locale .* but it was not found in loaded translations/
+    );
+  });
+
+  it('Should be ok with non-standard locale', function () {
+    run([
+      'compile',
+      '-t', join(fixtures_tmp_dir, 'no_base.yml'),
+      '-l', 'ru-RU',
+      '--raw', join(fixtures_tmp_dir, '123')
+    ]);
+  });
+
 
   it('Should fail on missed output options', function () {
     assert.throws(
