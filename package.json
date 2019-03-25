@@ -10,7 +10,8 @@
   "license": "MIT",
   "files": [
     "lv_i18n.js",
-    "lib/"
+    "lib/",
+    "src/"
   ],
   "bin": {
     "lv_i18n": "lv_i18n.js"
