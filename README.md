@@ -161,7 +161,7 @@ lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 
 ## C API
 
-#### int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
+#### int lv_i18n_init(const lv_i18n_language_pack_t * langs)
 Attach generated translations to be used by `lv_i18n_get_text()`.
 
 - _return_ - 0 on success, -1 on fail.

@@ -111,7 +111,7 @@ static const lv_i18n_lang_t de_de_lang = {
     .locale_plural_fn = de_de_plural_fn
 };
 
-const lv_i18n_lang_pack_t lv_i18n_language_pack[] = {
+const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
     &en_gb_lang,
     &ru_ru_lang,
     &de_de_lang,
@@ -122,7 +122,7 @@ const lv_i18n_lang_pack_t lv_i18n_language_pack[] = {
 
 
 // Internal state
-static const lv_i18n_lang_pack_t * current_lang_pack;
+static const lv_i18n_language_pack_t * current_lang_pack;
 static const lv_i18n_lang_t * current_lang;
 
 
@@ -139,7 +139,7 @@ void __lv_i18n_reset(void)
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
  */
-int lv_i18n_init(const lv_i18n_lang_pack_t * langs)
+int lv_i18n_init(const lv_i18n_language_pack_t * langs)
 {
     if(langs == NULL) return -1;
     if(langs[0] == NULL) return -1;

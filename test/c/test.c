@@ -158,7 +158,7 @@ void test_empty_base_tables_fallback(void)
         .locale_plural_fn = fake_plural_fn
     };
 
-    const lv_i18n_lang_pack_t fake_language_pack[] = {
+    const lv_i18n_language_pack_t fake_language_pack[] = {
         &en_gb_lang,
         &ru_ru_lang,
         NULL
@@ -192,7 +192,7 @@ void test_empty_plurals_fallback(void)
         .locale_plural_fn = NULL
     };
 
-    const lv_i18n_lang_pack_t fake_language_pack[] = {
+    const lv_i18n_language_pack_t fake_language_pack[] = {
         &en_gb_lang,
         &ru_ru_lang,
         NULL
@@ -226,7 +226,7 @@ void test_empty_content_check(void)
         .locale_plural_fn = fake_plural_fn
     };
 
-    const lv_i18n_lang_pack_t fake_language_pack[] = {
+    const lv_i18n_language_pack_t fake_language_pack[] = {
         &en_gb_lang,
         NULL
     };

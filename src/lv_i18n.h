@@ -31,17 +31,17 @@ typedef struct {
 } lv_i18n_lang_t;
 
 // Null-terminated list of languages. First one used as default.
-typedef const lv_i18n_lang_t * lv_i18n_lang_pack_t;
+typedef const lv_i18n_lang_t * lv_i18n_language_pack_t;
 
 
-extern const lv_i18n_lang_pack_t lv_i18n_language_pack[];
+extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
 
 
 /**
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
  */
-int lv_i18n_init(const lv_i18n_lang_pack_t * langs);
+int lv_i18n_init(const lv_i18n_language_pack_t * langs);
 
 /**
  * Change the localization (language)
