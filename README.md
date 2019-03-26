@@ -65,7 +65,7 @@ npx lv_i18n -h
 #include "lv_i18n/lv_i18n.h"  /*Assuming you have the translations here. (See below)*/
 
 /* Load translations & default locale (usually, done once) */
-lv_i18n_init(lv_i18n_lang_pack);
+lv_i18n_init(lv_i18n_language_pack);
 
 /* Set active locale (can be switched anytime) */
 lv_i18n_set_locale("ru-RU");
