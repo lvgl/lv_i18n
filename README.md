@@ -71,7 +71,7 @@ lv_i18n_init(lv_i18n_language_pack);
 lv_i18n_set_locale("ru-RU");
 
 /* The translation of "title1" will be returned according to the selected locale.
- * ("title1" is only a uniqu ID of the text.) Example:
+ * ("title1" is only a unique ID of the text.) Example:
  * en-GB: "Main menu"
  * ru_RU: "Главное меню"
  */
