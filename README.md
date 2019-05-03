@@ -102,7 +102,7 @@ For each translation, you need to create a `yml` file with "language code" name.
 
 Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and locale codes.
 
-Add the `\<locale-name\>: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
+Add the `locale-name: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
 E.g.: `en-GB: ~` or simply `en: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them.
