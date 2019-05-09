@@ -1,8 +1,6 @@
-matrix:
-  include:
-    -
-      language: node_js
-      node_js:
-        - node # latest stable
-      before_script: make test-deps
-      script: make test
+language: node_js
+node_js:
+  - node
+  - lts/*
+before_script: make test-deps
+script: make test
