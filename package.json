@@ -23,7 +23,7 @@
     "template_update": "./support/template_update.js"
   },
   "dependencies": {
-    "argparse": "^1.0.10",
+    "argparse": "^2.0.1",
     "debug": "^4.1.1",
     "es6-error": "^4.1.1",
     "glob": "^7.1.6",
