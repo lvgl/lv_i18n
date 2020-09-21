@@ -15,7 +15,7 @@ tools for C. Add multi-language support to your embedded projects with ease.
 3. Run `extract` to fill the `yml` files with the texts in `_()` and `_p()`
 4. Add the translations into the `yml` files
 5. Run `compile` to convert the `yml` files to a C and H file. They will contain the translations and all the background functions you need.
-
+6. Be sure your fonts contain the required characters. See [the docs here](https://docs.lvgl.io/latest/en/html/overview/font.html) for more details.
 
 ## Install/run the script
 
