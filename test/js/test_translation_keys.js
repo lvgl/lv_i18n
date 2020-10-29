@@ -68,7 +68,7 @@ describe('TranslationKeys', function () {
 
       tk.loadText("{ 'en-GB': { 'foo': null, 'bar': null } }", 'test.yml');
       tk.removePhraseObj('en-GB', 'foo');
-      assert.deepEqual(tk.createFilesData(), {
+      assert.deepStrictEqual(tk.createFilesData(), {
         'test.yml': {
           'en-GB': {
             bar: null

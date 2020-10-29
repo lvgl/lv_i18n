@@ -23,7 +23,7 @@ describe('CLI rename', function () {
   it('Should rename singulars', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'foo', '--to', 'new_foo' ]);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
@@ -36,7 +36,7 @@ describe('CLI rename', function () {
       }
     );
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {
@@ -54,7 +54,7 @@ describe('CLI rename', function () {
   it('Should rename plurals', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'new_nail' ]);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
@@ -67,7 +67,7 @@ describe('CLI rename', function () {
       }
     );
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {
@@ -85,7 +85,7 @@ describe('CLI rename', function () {
   it('Should override existing keys', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'foo' ]);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
@@ -97,7 +97,7 @@ describe('CLI rename', function () {
       }
     );
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {

@@ -58,7 +58,7 @@ describe('CLI extract', function () {
   it('Should fill empty locales', function () {
     run([ 'extract', '-s', join(fixtures, 'src_*.c'), '-t', join(fixtures, 'empty_*.yml') ]);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures, 'empty_en-GB.yml'))),
       {
         'en-GB': {
@@ -71,7 +71,7 @@ describe('CLI extract', function () {
         }
       }
     );
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures, 'empty_ru-RU.yml'))),
       {
         'ru-RU': {
@@ -91,7 +91,7 @@ describe('CLI extract', function () {
   it('Should add missed keys', function () {
     run([ 'extract', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
 
-    assert.deepEqual(
+    assert.deepStrictEqual(
       yaml.safeLoad(readFileSync(join(fixtures, 'partial_en-GB.yml'))),
       {
         'en-GB': {

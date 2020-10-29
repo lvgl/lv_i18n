@@ -10,7 +10,7 @@ const parse = require('../../lib/parser');
 describe('Parser', function () {
 
   it('Should find singulars', function () {
-    assert.deepEqual(
+    assert.deepStrictEqual(
       parse(`
         const char* my_text = _("My text");
         int i;
@@ -32,7 +32,7 @@ describe('Parser', function () {
   });
 
   it('Should find scoped singular', function () {
-    assert.deepEqual(
+    assert.deepStrictEqual(
       parse(`
         printf(_("msgid1"));
       `),
@@ -49,7 +49,7 @@ describe('Parser', function () {
 
 
   it('Should find plurals', function () {
-    assert.deepEqual(
+    assert.deepStrictEqual(
       parse(`
         const char* my_text = _p("My text", number);
         int i;
@@ -71,7 +71,7 @@ describe('Parser', function () {
   });
 
   it('Should keep order of results by lines', function () {
-    assert.deepEqual(
+    assert.deepStrictEqual(
       parse(`
         const char* p1 = _p("plural 1", number);
         const char* s1 = _("singular 1");
