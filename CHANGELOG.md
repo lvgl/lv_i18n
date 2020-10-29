@@ -1,3 +1,9 @@
+0.2.1 / 2020-10-29
+------------------
+
+- Fix extract of multiple phrases from single line, #31.
+
+
 0.2.0 / 2020-10-29
 ------------------
 

@@ -31,6 +31,7 @@ describe('Parser', function () {
     );
   });
 
+
   it('Should find scoped singular', function () {
     assert.deepStrictEqual(
       parse(`
@@ -45,7 +46,6 @@ describe('Parser', function () {
       ]
     );
   });
-
 
 
   it('Should find plurals', function () {
@@ -69,6 +69,28 @@ describe('Parser', function () {
       ]
     );
   });
+
+
+  it('Should find multiple entries at the same line', function () {
+    assert.deepStrictEqual(
+      parse(`
+        foo(_("BAR"), _("BAZ"));;
+      `),
+      [
+        {
+          key: 'BAR',
+          line: 2,
+          plural: false
+        },
+        {
+          key: 'BAZ',
+          line: 2,
+          plural: false
+        }
+      ]
+    );
+  });
+
 
   it('Should keep order of results by lines', function () {
     assert.deepStrictEqual(
