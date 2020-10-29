@@ -1,6 +1,6 @@
 {
   "name": "lv_i18n",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "CLI tools for LittlevGL i18n support.",
   "keywords": [
     "i18n",
