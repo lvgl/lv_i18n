@@ -20,7 +20,9 @@
     "lint": "eslint .",
     "test": "npm run lint && nyc mocha --recursive",
     "coverage": "npm run test && nyc report --reporter html",
-    "template_update": "./support/template_update.js"
+    "template_update": "./support/template_update.js",
+    "shrink-deps": "shx rm -rf node_modules/js-yaml/dist node_modules/lodash/fp/",
+    "prepublishOnly": "npm run shrink-deps"
   },
   "dependencies": {
     "argparse": "^2.0.1",
@@ -32,9 +34,20 @@
     "make-plural": "^4.3.0",
     "shelljs": "^0.8.4"
   },
+  "bundledDependencies": [
+    "argparse",
+    "debug",
+    "es6-error",
+    "glob",
+    "js-yaml",
+    "lodash",
+    "make-plural",
+    "shelljs"
+  ],
   "devDependencies": {
     "eslint": "^7.8.1",
     "mocha": "^8.1.3",
-    "nyc": "^15.1.0"
+    "nyc": "^15.1.0",
+    "shx": "^0.3.3"
   }
 }
