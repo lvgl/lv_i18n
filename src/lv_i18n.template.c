@@ -138,10 +138,11 @@ void __lv_i18n_reset(void)
 /**
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
+ *              if `NULL` `lv_i18n_language_pack` will be used.
  */
 int lv_i18n_init(const lv_i18n_language_pack_t * langs)
 {
-    if(langs == NULL) return -1;
+    if(langs == NULL) langs = lv_i18n_language_pack;
     if(langs[0] == NULL) return -1;
 
     current_lang_pack = langs;

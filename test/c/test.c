@@ -4,12 +4,12 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-void test_init_should_ignore_NULL_input(void)
+void test_init_should_use_default_on_NULL_input(void)
 {
     __lv_i18n_reset();
 
-    TEST_ASSERT_EQUAL(lv_i18n_init(NULL), -1);
-    TEST_ASSERT_NULL(lv_i18n_get_current_locale());
+    TEST_ASSERT_EQUAL(lv_i18n_init(NULL), 0);
+    TEST_ASSERT_EQUAL_STRING(lv_i18n_get_current_locale(), "en-GB");
 }
 
 void test_init_should_ignore_empty_language_pack(void)
@@ -245,7 +245,7 @@ int main(void)
     UNITY_BEGIN();
 
     // lv_i18n_init
-    RUN_TEST(test_init_should_ignore_NULL_input);
+    RUN_TEST(test_init_should_use_default_on_NULL_input);
     RUN_TEST(test_init_should_ignore_empty_language_pack);
     RUN_TEST(test_init_should_work);
 
