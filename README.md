@@ -139,7 +139,7 @@ Example:
   title1: Main menu
   user_logged_in:
     one: One user is logged in
-    other: %d users are logged in
+    other: '%d users are logged in'
 ```
 ## Run compile to convert the yml files to a C and H file
 
