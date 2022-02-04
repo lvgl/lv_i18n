@@ -177,7 +177,7 @@ static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char
     uint16_t i;
     for(i = 0; trans[i].msg_id != NULL; i++) {
         if(strcmp(trans[i].msg_id, msg_id) == 0) {
-            /*The msg_id has found. Check the translation*/
+            /*The msg_id has been found. Check the translation*/
             if(trans[i].translation) return trans[i].translation;
         }
     }
