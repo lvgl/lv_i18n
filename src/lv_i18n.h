@@ -75,7 +75,7 @@ void __lv_i18n_reset(void);
 
 
 #define _(text) lv_i18n_get_text(text)
-#define _p(text, num) lv_i18n_get_text_plural(text, num)
+#define _pl(text, num) lv_i18n_get_text_plural(text, num)
 
 
 #ifdef __cplusplus
