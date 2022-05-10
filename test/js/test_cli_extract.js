@@ -59,7 +59,7 @@ describe('CLI extract', function () {
     run([ 'extract', '-s', join(fixtures, 'src_*.c'), '-t', join(fixtures, 'empty_*.yml') ]);
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures, 'empty_en-GB.yml'))),
+      yaml.load(readFileSync(join(fixtures, 'empty_en-GB.yml'))),
       {
         'en-GB': {
           text1: null,
@@ -72,7 +72,7 @@ describe('CLI extract', function () {
       }
     );
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures, 'empty_ru-RU.yml'))),
+      yaml.load(readFileSync(join(fixtures, 'empty_ru-RU.yml'))),
       {
         'ru-RU': {
           text1: null,
@@ -92,7 +92,7 @@ describe('CLI extract', function () {
     run([ 'extract', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures, 'partial_en-GB.yml'))),
+      yaml.load(readFileSync(join(fixtures, 'partial_en-GB.yml'))),
       {
         'en-GB': {
           text1: null,

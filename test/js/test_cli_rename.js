@@ -24,7 +24,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'foo', '--to', 'new_foo' ]);
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
           new_foo: null,
@@ -37,7 +37,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {
           new_foo: 'фуу',
@@ -55,7 +55,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'new_nail' ]);
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
           foo: null,
@@ -68,7 +68,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {
           foo: 'фуу',
@@ -86,7 +86,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'foo' ]);
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
       {
         'en-GB': {
           foo: {
@@ -98,7 +98,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.safeLoad(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
       {
         'ru-RU': {
           foo: {

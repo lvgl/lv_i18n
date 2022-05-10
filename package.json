@@ -26,13 +26,13 @@
   },
   "dependencies": {
     "argparse": "^2.0.1",
-    "debug": "^4.1.1",
+    "debug": "^4.3.4",
     "es6-error": "^4.1.1",
-    "glob": "^7.1.6",
-    "js-yaml": "^3.14.0",
-    "lodash": "^4.17.20",
+    "glob": "^8.0.1",
+    "js-yaml": "^4.1.0",
+    "lodash": "^4.17.21",
     "make-plural": "^4.3.0",
-    "shelljs": "^0.8.4"
+    "shelljs": "^0.8.5"
   },
   "bundledDependencies": [
     "argparse",
@@ -45,9 +45,9 @@
     "shelljs"
   ],
   "devDependencies": {
-    "eslint": "^7.8.1",
-    "mocha": "^8.1.3",
+    "eslint": "^8.15.0",
+    "mocha": "^10.0.0",
     "nyc": "^15.1.0",
-    "shx": "^0.3.3"
+    "shx": "^0.3.4"
   }
 }
