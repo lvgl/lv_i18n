@@ -1,7 +1,10 @@
 'use strict';
 
 
-const assert = require('assert');
+const assert            = require('assert');
+const yaml              = require('js-yaml');
+const { join }          = require('path');
+const { readFileSync }  = require('fs');
 
 
 const parse = require('../../lib/parser');
@@ -119,4 +122,15 @@ describe('Parser', function () {
     );
   });
 
+
+  describe('unescape_c', function () {
+    const test_file = join(__dirname, 'fixtures/c_escapes.yml');
+    let tests = yaml.load(readFileSync(test_file));
+
+    for (let [ src, dst ] of Object.values(tests)) {
+      it(src, function () {
+        assert.strictEqual(parse._unescape_c(src), dst);
+      });
+    }
+  });
 });

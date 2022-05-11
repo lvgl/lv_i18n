@@ -26,7 +26,7 @@ describe('newlines', function () {
       yaml.load(readFileSync(join(fixtures_tmp_dir, 'partial_ru-RU.yml'))),
       {
         'ru-RU': {
-          'line1\nline2\ttext\nline3': null,
+          'line1\nline2\ttext\nline3': null
         }
       }
     );
