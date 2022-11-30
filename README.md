@@ -110,7 +110,7 @@ Technically you can have one `yml` file where you list all language codes you ne
 
 ## Run extract to fill the yml files
 
-Run `extract` like this (assuming your source files are in the `src` folder and the `yml` files in the translations folder):
+Run `extract` like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder):
 
 ```sh
 lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
@@ -139,7 +139,7 @@ Example:
   title1: Main menu
   user_logged_in:
     one: One user is logged in
-    other: '%d users are logged in'
+    other: %d users are logged in
 ```
 ## Run compile to convert the yml files to a C and H file
 
@@ -151,7 +151,18 @@ Running `compile`:
 lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n'
 ```
 
-The deafult locale is `en-GB` but you change it with `-l 'language-code'`.
+The default locale is `en-GB` but you change it with `-l 'language-code'`.
+
+You can use `--optimize` to generate optimized C code. Without this, finding the corresponding translation by `lv_i18n_get_text()` is done by searching through all keys until the right one is found. This can eat up a lot of CPU espcially if the list is long (aka O(n)). Using `--optimize` changes this behaviour by using an integer index into the list of strings resulting in an immediate return of the right string (aka O(1)). As the index is computed at compile time, you need a compiler, which is able to evaluate `strcmp()` with constants at compile time. All modern compilers, like gcc and clang are able to do this. If you want to check, whether your compiler is able to handle this optimization, you can use the following code to check this:
+
+```c
+int main()
+{
+  return strcmp("a", "a");
+}
+```
+
+If this compiles without needing `#include <string.h>` and `nm -u a.out` does not output `strcmp` as being undefined, then the compiler optimizes the code and is able to handle `--optimize`.
 
 ## Follow modifications in the source code
 To change a text id in the `yml` files use:

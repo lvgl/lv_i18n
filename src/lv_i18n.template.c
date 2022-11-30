@@ -185,6 +185,40 @@ static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char
     return NULL;
 }
 
+#ifdef LV_I18N_OPTIMIZE
+/**
+ * Get the translation from a message ID
+ * @param msg_id message ID
+ * @param msg_index the index of the msg_id
+ * @return the translation of `msg_id` on the set local
+ */
+const char * lv_i18n_get_text_optimized(const char *msg_id, int msg_index)
+{
+    if(current_lang == NULL) return msg_id;
+
+    const lv_i18n_lang_t * lang = current_lang;
+    const void * txt;
+
+    // Search in current locale
+    if(lang->singulars != NULL) {
+        txt = lang->singulars[msg_index];
+        if (txt != NULL) return txt;
+    }
+
+    // Try to fallback
+    if(lang == current_lang_pack[0]) return msg_id;
+    lang = current_lang_pack[0];
+
+    // Repeat search for default locale
+    if(lang->singulars != NULL) {
+        txt = lang->singulars[msg_index];
+        if (txt != NULL) return txt;
+    }
+
+    return msg_id;
+}
+
+#else
 
 /**
  * Get the translation from a message ID
@@ -216,6 +250,8 @@ const char * lv_i18n_get_text(const char * msg_id)
 
     return msg_id;
 }
+
+#endif
 
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form

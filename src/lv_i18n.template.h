@@ -8,6 +8,11 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
+/*IDX_START*/
+// Here are the definitions for mode "optimize", that uses integer
+// as keys instead of strings.
+/*IDX_END*/
+
 typedef enum {
     LV_I18N_PLURAL_TYPE_ZERO,
     LV_I18N_PLURAL_TYPE_ONE,
@@ -25,7 +30,11 @@ typedef struct {
 
 typedef struct {
     const char * locale_name;
+#ifdef LV_I18N_OPTIMIZE
+    const char * singulars;
+#else 
     lv_i18n_phrase_t * singulars;
+#endif
     lv_i18n_phrase_t * plurals[_LV_I18N_PLURAL_TYPE_NUM];
     uint8_t (*locale_plural_fn)(int32_t num);
 } lv_i18n_lang_t;
@@ -57,6 +66,14 @@ int lv_i18n_set_locale(const char * l_name);
 const char * lv_i18n_get_text(const char * msg_id);
 
 /**
+ * Get the translation from a message ID
+ * @param msg_id message ID
+ * @param msg_index the index of the msg_id
+ * @return the translation of `msg_id` on the set local
+ */
+const char * lv_i18n_get_text_optimized(const char * msg_id, int msg_index);
+
+/**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
  * @param msg_id message ID
  * @param num an integer to select the correct plural form
@@ -73,9 +90,13 @@ const char * lv_i18n_get_current_locale(void);
 
 void __lv_i18n_reset(void);
 
-
+#ifdef LV_I18N_OPTIMIZE
+#define _(text) lv_i18n_get_text_optimized(text, LV_I18N_IDX_s(text))
+#define _p(text, num) lv_i18n_get_text_plural(text, num)
+#else
 #define _(text) lv_i18n_get_text(text)
 #define _p(text, num) lv_i18n_get_text_plural(text, num)
+#endif
 
 
 #ifdef __cplusplus
