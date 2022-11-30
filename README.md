@@ -110,7 +110,7 @@ Technically you can have one `yml` file where you list all language codes you ne
 
 ## Run extract to fill the yml files
 
-Run `extract` like this (assuming your source files are in the `src` folder an the `yml` files in the translations folder):
+Run `extract` like this (assuming your source files are in the `src` folder and the `yml` files in the translations folder):
 
 ```sh
 lv_i18n extract -s 'src/**/*.+(c|cpp|h|hpp)' -t 'translations/*.yml'
