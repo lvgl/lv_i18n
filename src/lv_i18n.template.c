@@ -17,6 +17,7 @@ static inline uint32_t op_v(uint32_t val) { UNUSED(val); return 0;}
 static inline uint32_t op_w(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
+static inline uint32_t op_e(uint32_t val) { UNUSED(val); return 0; }
 
 static lv_i18n_phrase_t en_gb_singulars[] = {
     {"s_en_only", "english only"},
