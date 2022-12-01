@@ -1,6 +1,6 @@
 #include "unity.h"
 #include <stdio.h>
-#include "../../src/lv_i18n.h"
+#include "../../src/lv_i18n.template.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
