@@ -150,6 +150,15 @@ int lv_i18n_init(const lv_i18n_language_pack_t * langs)
 }
 
 /**
+ * Sugar for simplified `lv_i18n_init` call
+ */
+int lv_i18n_init_default(void)
+{
+    return lv_i18n_init(lv_i18n_language_pack);
+}
+
+
+/**
  * Change the localization (language)
  * @param l_name name of the translation locale to use. E.g. "en-GB"
  */
