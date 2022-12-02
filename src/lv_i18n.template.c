@@ -17,6 +17,7 @@ static inline uint32_t op_v(uint32_t val) { UNUSED(val); return 0;}
 static inline uint32_t op_w(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
+static inline uint32_t op_e(uint32_t val) { UNUSED(val); return 0; }
 
 static lv_i18n_phrase_t en_gb_singulars[] = {
     {"s_en_only", "english only"},
@@ -138,17 +139,25 @@ void __lv_i18n_reset(void)
 /**
  * Set the languages for internationalization
  * @param langs pointer to the array of languages. (Last element has to be `NULL`)
- *              if `NULL` `lv_i18n_language_pack` will be used.
  */
 int lv_i18n_init(const lv_i18n_language_pack_t * langs)
 {
-    if(langs == NULL) langs = lv_i18n_language_pack;
+    if(langs == NULL) return -1;
     if(langs[0] == NULL) return -1;
 
     current_lang_pack = langs;
     current_lang = langs[0];     /*Automatically select the first language*/
     return 0;
 }
+
+/**
+ * Sugar for simplified `lv_i18n_init` call
+ */
+int lv_i18n_init_default(void)
+{
+    return lv_i18n_init(lv_i18n_language_pack);
+}
+
 
 /**
  * Change the localization (language)
