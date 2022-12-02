@@ -31,7 +31,6 @@
     "es6-error": "^4.1.1",
     "glob": "^8.0.3",
     "js-yaml": "^4.1.0",
-    "lodash": "^4.17.21",
     "shelljs": "^0.8.5"
   },
   "bundledDependencies": [
@@ -41,8 +40,6 @@
     "es6-error",
     "glob",
     "js-yaml",
-    "lodash",
-    "make-plural",
     "shelljs"
   ],
   "devDependencies": {
