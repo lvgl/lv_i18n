@@ -194,14 +194,14 @@ static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char
  */
 const char * lv_i18n_get_text_optimized(const char *msg_id, int msg_index)
 {
-    if(current_lang == NULL) return msg_id;
+    if(current_lang == NULL || msg_index == 0) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
     const void * txt;
 
     // Search in current locale
     if(lang->singulars != NULL) {
-        txt = lang->singulars[msg_index];
+        txt = lang->singulars[msg_index-1];
         if (txt != NULL) return txt;
     }
 
@@ -211,7 +211,7 @@ const char * lv_i18n_get_text_optimized(const char *msg_id, int msg_index)
 
     // Repeat search for default locale
     if(lang->singulars != NULL) {
-        txt = lang->singulars[msg_index];
+        txt = lang->singulars[msg_index-1];
         if (txt != NULL) return txt;
     }
 

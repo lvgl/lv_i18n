@@ -31,7 +31,7 @@ typedef struct {
 typedef struct {
     const char * locale_name;
 #ifdef LV_I18N_OPTIMIZE
-    const char * singulars;
+    const char * * singulars;
 #else 
     lv_i18n_phrase_t * singulars;
 #endif
