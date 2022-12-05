@@ -55,5 +55,5 @@ test:
 test_optimized:
 	mkdir -p $(BUILD_DIR)
 	../../lv_i18n.js compile -t ../../support/template_data.yml --optimize -o build/ -l en-GB
-	$(CC) $(CFLAGS) $(DEFINES) -DLV_I18N_OPTIMIZE $(INC_DIR) unity/src/unity.c build/lv_i18n.c test.c -o $(TARGET)
+	$(CC) $(CFLAGS) $(DEFINES) $(INC_DIR) unity/src/unity.c build/lv_i18n.c test.c -o $(TARGET)
 	./$(TARGET)
