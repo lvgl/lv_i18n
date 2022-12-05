@@ -8,10 +8,12 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
-/*IDX_START*/
-// Here are the definitions for mode "optimize", that uses integer
+// Here are the definitions for lv_i18n_get_text_by_idx(), that uses integer
 // as keys instead of strings.
-/*IDX_END*/
+/*SAMPLE_START*/
+#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?1:(!strcmp(str, "s_translated")?2:(!strcmp(str, "s_untranslated")?3:0)))
+
+/*SAMPLE_END*/
 
 typedef enum {
     LV_I18N_PLURAL_TYPE_ZERO,
@@ -76,7 +78,7 @@ const char * lv_i18n_get_text(const char * msg_id);
  * @param msg_index the index of the msg_id
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_optimized(const char * msg_id, int msg_index);
+const char * lv_i18n_get_text_by_idx(const char * msg_id, int msg_index);
 
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
@@ -96,7 +98,7 @@ const char * lv_i18n_get_current_locale(void);
 void __lv_i18n_reset(void);
 
 #ifdef LV_I18N_OPTIMIZE
-#define _(text) lv_i18n_get_text_optimized(text, LV_I18N_IDX_s(text))
+#define _(text) lv_i18n_get_text_by_idx(text, LV_I18N_IDX_s(text))
 #define _p(text, num) lv_i18n_get_text_plural(text, num)
 #else
 #define _(text) lv_i18n_get_text(text)

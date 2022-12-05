@@ -201,7 +201,7 @@ static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char
  * @param msg_index the index of the msg_id
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_optimized(const char *msg_id, int msg_index)
+const char * lv_i18n_get_text_by_idx(const char *msg_id, int msg_index)
 {
     if(current_lang == NULL || msg_index == 0) return msg_id;
 
