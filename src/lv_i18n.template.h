@@ -11,6 +11,7 @@ extern "C" {
 // Here are the definitions for lv_i18n_get_text_by_idx(), that uses integer
 // as keys instead of strings.
 /*SAMPLE_START*/
+#undef LV_I18N_OPTIMIZE
 #define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?1:(!strcmp(str, "s_translated")?2:(!strcmp(str, "s_untranslated")?3:0)))
 
 /*SAMPLE_END*/
