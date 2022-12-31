@@ -106,7 +106,7 @@ const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
  * @param msg_index the index of the msg_id
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_by_idx(const char *msg_id, int msg_index)
+const char * lv_i18n_get_singular_by_idx(const char *msg_id, int msg_index)
 {
     if(current_lang == NULL || msg_index == 0) return msg_id;
 
@@ -139,7 +139,7 @@ const char * lv_i18n_get_text_by_idx(const char *msg_id, int msg_index)
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_plural_by_idx(const char * msg_id, int msg_index, int32_t num)
+const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32_t num)
 {
     if(current_lang == NULL || msg_index == 0) return msg_id;
 
@@ -237,7 +237,7 @@ const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
 };
 
 
-static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char * msg_id)
+static const char * __lv_i18n_get_by_map(lv_i18n_phrase_t * trans, const char * msg_id)
 {
     uint16_t i;
     for(i = 0; trans[i].msg_id != NULL; i++) {
@@ -255,7 +255,7 @@ static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char
  * @param msg_id message ID
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text(const char * msg_id)
+const char * lv_i18n_get_singular_by_map(const char * msg_id)
 {
     if(current_lang == NULL) return msg_id;
 
@@ -264,7 +264,7 @@ const char * lv_i18n_get_text(const char * msg_id)
 
     // Search in current locale
     if(lang->singulars != NULL) {
-        txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
+        txt = __lv_i18n_get_by_map(lang->singulars, msg_id);
         if (txt != NULL) return txt;
     }
 
@@ -274,7 +274,7 @@ const char * lv_i18n_get_text(const char * msg_id)
 
     // Repeat search for default locale
     if(lang->singulars != NULL) {
-        txt = __lv_i18n_get_text_core(lang->singulars, msg_id);
+        txt = __lv_i18n_get_by_map(lang->singulars, msg_id);
         if (txt != NULL) return txt;
     }
 
@@ -287,7 +287,7 @@ const char * lv_i18n_get_text(const char * msg_id)
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
+const char * lv_i18n_get_plural_by_map(const char * msg_id, int32_t num)
 {
     if(current_lang == NULL) return msg_id;
 
@@ -300,7 +300,7 @@ const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
         ptype = lang->locale_plural_fn(num);
 
         if(lang->plurals[ptype] != NULL) {
-            txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
+            txt = __lv_i18n_get_by_map(lang->plurals[ptype], msg_id);
             if (txt != NULL) return txt;
         }
     }
@@ -314,7 +314,7 @@ const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num)
         ptype = lang->locale_plural_fn(num);
 
         if(lang->plurals[ptype] != NULL) {
-            txt = __lv_i18n_get_text_core(lang->plurals[ptype], msg_id);
+            txt = __lv_i18n_get_by_map(lang->plurals[ptype], msg_id);
             if (txt != NULL) return txt;
         }
     }

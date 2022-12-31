@@ -27,7 +27,7 @@ typedef struct {
 
 #ifdef LV_I18N_OPTIMIZE
 
-// Here are the definitions for lv_i18n_get_text_by_idx(), that uses integer
+// Here are the definitions for fast indexed lookup, that uses integer
 // as keys instead of strings.
 #define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?1: \\
 			   (!strcmp(str, "s_translated")?2: \\
@@ -56,7 +56,7 @@ extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
  * @param msg_index the index of the msg_id
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_by_idx(const char * msg_id, int msg_index);
+const char * lv_i18n_get_singular_by_idx(const char * msg_id, int msg_index);
 
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
@@ -65,11 +65,11 @@ const char * lv_i18n_get_text_by_idx(const char * msg_id, int msg_index);
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_plural_by_idx(const char * msg_id, int msg_index, int32_t num);
+const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32_t num);
 
 
-#define _(text) lv_i18n_get_text_by_idx(text, LV_I18N_IDX_s(text))
-#define _p(text, num) lv_i18n_get_text_plural_by_idx(text, LV_I18N_p(text), num)
+#define _(text) lv_i18n_get_singular_by_idx(text, LV_I18N_IDX_s(text))
+#define _p(text, num) lv_i18n_get_plural_by_idx(text, LV_I18N_p(text), num)
 
 #else
 
@@ -91,7 +91,7 @@ extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
  * @param msg_id message ID
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text(const char * msg_id);
+const char * lv_i18n_get_singular_by_map(const char * msg_id);
 
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
@@ -99,10 +99,10 @@ const char * lv_i18n_get_text(const char * msg_id);
  * @param num an integer to select the correct plural form
  * @return the translation of `msg_id` on the set local
  */
-const char * lv_i18n_get_text_plural(const char * msg_id, int32_t num);
+const char * lv_i18n_get_plural_by_map(const char * msg_id, int32_t num);
 
-#define _(text) lv_i18n_get_text(text)
-#define _p(text, num) lv_i18n_get_text_plural(text, num)
+#define _(text) lv_i18n_get_singular_by_map(text)
+#define _p(text, num) lv_i18n_get_plural_by_map(text, num)
 
 #endif
 
