@@ -106,7 +106,7 @@ const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
  */
 const char * lv_i18n_get_singular_by_idx(const char *msg_id, int msg_index)
 {
-    if(current_lang == NULL || msg_index == 0) return msg_id;
+    if(current_lang == NULL || msg_index == LV_I18N_ID_NOT_FOUND) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
     const char * txt;
@@ -139,7 +139,7 @@ const char * lv_i18n_get_singular_by_idx(const char *msg_id, int msg_index)
  */
 const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32_t num)
 {
-    if(current_lang == NULL || msg_index == 0) return msg_id;
+    if(current_lang == NULL || msg_index == LV_I18N_ID_NOT_FOUND) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
     const char * txt;
@@ -194,7 +194,7 @@ static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
     for(i = 0; i < len; i++) {
         if(strcmp(list[i], phrase) == 0) return i;
     }
-    return 0;
+    return LV_I18N_ID_NOT_FOUND;
 }
 
 int lv_i18n_get_singular_id(const char * phrase)

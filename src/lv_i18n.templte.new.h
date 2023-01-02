@@ -27,6 +27,8 @@ typedef struct {
     uint8_t (*locale_plural_fn)(int32_t num);
 } lv_i18n_lang_t;
 
+#define LV_I18N_ID_NOT_FOUND 0xFFFF
+
 // Null-terminated list of languages. First one used as default.
 typedef const lv_i18n_lang_t * lv_i18n_language_pack_t;
 
@@ -54,13 +56,13 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
 
 // Here are the definitions for fast indexed lookup, that uses integer
 // as keys instead of strings.
-#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?1: \\
-			   (!strcmp(str, "s_translated")?2: \\
-			   (!strcmp(str, "s_untranslated")?3: \\
-			    0)))
+#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?0: \\
+			   (!strcmp(str, "s_translated")?1: \\
+			   (!strcmp(str, "s_untranslated")?2: \\
+			    LV_I18N_ID_NOT_FOUND)))
 
-#define LV_I18N_IDX_p(str) (!strcmp(str, "p_i_have_dogs")?1: \\
-			    0)
+#define LV_I18N_IDX_p(str) (!strcmp(str, "p_i_have_dogs")?0: \\
+			    LV_I18N_ID_NOT_FOUND)
 
 #define _(text) lv_i18n_get_singular_by_idx(text, LV_I18N_IDX_s(text))
 #define _p(text, num) lv_i18n_get_plural_by_idx(text, LV_I18N_p(text), num)
