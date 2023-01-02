@@ -1,4 +1,4 @@
-#include "./lv_i18n.h"
+#include "./lv_i18n.templte.new.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,8 +40,6 @@ static uint8_t ru_ru_plural_fn(int32_t num)
     if ((v == 0 && i10 == 0) || (v == 0 && (5 <= i10 && i10 <= 9)) || (v == 0 && (11 <= i100 && i100 <= 14))) return LV_I18N_PLURAL_TYPE_MANY;
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
-
-#ifdef LV_I18N_OPTIMIZE
 
 static const char * en_gb_singulars[] = {
   "english only", // 1=s_en_only
@@ -111,7 +109,7 @@ const char * lv_i18n_get_singular_by_idx(const char *msg_id, int msg_index)
     if(current_lang == NULL || msg_index == 0) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
-    const void * txt;
+    const char * txt;
 
     // Search in current locale
     if(lang->singulars != NULL) {
@@ -144,7 +142,7 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
     if(current_lang == NULL || msg_index == 0) return msg_id;
 
     const lv_i18n_lang_t * lang = current_lang;
-    const void * txt;
+    const char * txt;
     lv_i18n_plural_type_t ptype;
 
     // Search in current locale
@@ -173,153 +171,40 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
 
     return msg_id;
 }
+
+#ifdef LV_I18N_OPTIMIZE
+// Modern compilers calculate phrase IDs at compile time
 
 #else
+// Fallback for ancient compilers, search phrase IDs in runtime (slow)
 
-static lv_i18n_phrase_t en_gb_singulars[] = {
-    {"s_en_only", "english only"},
-    {"s_translated", "s translated"},
-    {NULL, NULL} // End mark
+static char * singular_idx[] = {
+    "s_en_only",
+    "s_translated",
+    "s_untranslated"
 };
 
-static lv_i18n_phrase_t en_gb_plurals_one[] = {
-    {"p_i_have_dogs", "I have %d dog"},
-    {NULL, NULL} // End mark
+static char * plural_idx[] = {
+    "p_i_have_dogs"
 };
 
-static lv_i18n_phrase_t en_gb_plurals_other[] = {
-    {"p_i_have_dogs", "I have %d dogs"},
-    {NULL, NULL} // End mark
-};
-
-static lv_i18n_phrase_t ru_ru_singulars[] = {
-  {"s_translated", "s переведено"},
-  {NULL, NULL} // End mark
-};
-
-static lv_i18n_phrase_t ru_ru_plurals_one[] = {
-    {"p_i_have_dogs", "У меня %d собакен"},
-    {NULL, NULL} // End mark
-};
-
-static lv_i18n_phrase_t ru_ru_plurals_few[] = {
-    {"p_i_have_dogs", "У меня %d собакена"},
-    {NULL, NULL} // End mark
-};
-
-static lv_i18n_phrase_t ru_ru_plurals_many[] = {
-    {"p_i_have_dogs", "У меня %d собакенов"},
-    {NULL, NULL} // End mark
-};
-
-
-static const lv_i18n_lang_t en_gb_lang = {
-    .locale_name = "en-GB",
-    .singulars = en_gb_singulars,
-    .plurals[LV_I18N_PLURAL_TYPE_ONE] = en_gb_plurals_one,
-    .plurals[LV_I18N_PLURAL_TYPE_OTHER] = en_gb_plurals_other,
-    .locale_plural_fn = en_gb_plural_fn
-};
-
-static const lv_i18n_lang_t ru_ru_lang = {
-    .locale_name = "ru-RU",
-    .singulars = ru_ru_singulars,
-    .plurals[LV_I18N_PLURAL_TYPE_ONE] = ru_ru_plurals_one,
-    .plurals[LV_I18N_PLURAL_TYPE_FEW] = ru_ru_plurals_few,
-    .plurals[LV_I18N_PLURAL_TYPE_MANY] = ru_ru_plurals_many,
-    .locale_plural_fn = ru_ru_plural_fn
-};
-
-const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
-    &en_gb_lang,
-    &ru_ru_lang,
-    NULL // End mark
-};
-
-
-static const char * __lv_i18n_get_by_map(lv_i18n_phrase_t * trans, const char * msg_id)
+static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
 {
     uint16_t i;
-    for(i = 0; trans[i].msg_id != NULL; i++) {
-        if(strcmp(trans[i].msg_id, msg_id) == 0) {
-            /*The msg_id has been found. Check the translation*/
-            if(trans[i].translation) return trans[i].translation;
-        }
+    for(i = 0; i < len; i++) {
+        if(strcmp(list[i], phrase) == 0) return i;
     }
-
-    return NULL;
+    return 0;
 }
 
-/**
- * Get the translation from a message ID
- * @param msg_id message ID
- * @return the translation of `msg_id` on the set local
- */
-const char * lv_i18n_get_singular_by_map(const char * msg_id)
+int lv_i18n_get_singular_id(const char * phrase)
 {
-    if(current_lang == NULL) return msg_id;
-
-    const lv_i18n_lang_t * lang = current_lang;
-    const void * txt;
-
-    // Search in current locale
-    if(lang->singulars != NULL) {
-        txt = __lv_i18n_get_by_map(lang->singulars, msg_id);
-        if (txt != NULL) return txt;
-    }
-
-    // Try to fallback
-    if(lang == current_lang_pack[0]) return msg_id;
-    lang = current_lang_pack[0];
-
-    // Repeat search for default locale
-    if(lang->singulars != NULL) {
-        txt = __lv_i18n_get_by_map(lang->singulars, msg_id);
-        if (txt != NULL) return txt;
-    }
-
-    return msg_id;
+    return __lv_i18n_get_id(phrase, singular_idx, sizeof(singular_idx) / sizeof(singular_idx[0]));
 }
 
-/**
- * Get the translation from a message ID and apply the language's plural rule to get correct form
- * @param msg_id message ID
- * @param num an integer to select the correct plural form
- * @return the translation of `msg_id` on the set local
- */
-const char * lv_i18n_get_plural_by_map(const char * msg_id, int32_t num)
+int lv_i18n_get_plural_id(const char * phrase)
 {
-    if(current_lang == NULL) return msg_id;
-
-    const lv_i18n_lang_t * lang = current_lang;
-    const void * txt;
-    lv_i18n_plural_type_t ptype;
-
-    // Search in current locale
-    if(lang->locale_plural_fn != NULL) {
-        ptype = lang->locale_plural_fn(num);
-
-        if(lang->plurals[ptype] != NULL) {
-            txt = __lv_i18n_get_by_map(lang->plurals[ptype], msg_id);
-            if (txt != NULL) return txt;
-        }
-    }
-
-    // Try to fallback
-    if(lang == current_lang_pack[0]) return msg_id;
-    lang = current_lang_pack[0];
-
-    // Repeat search for default locale
-    if(lang->locale_plural_fn != NULL) {
-        ptype = lang->locale_plural_fn(num);
-
-        if(lang->plurals[ptype] != NULL) {
-            txt = __lv_i18n_get_by_map(lang->plurals[ptype], msg_id);
-            if (txt != NULL) return txt;
-        }
-    }
-
-    return msg_id;
+    return __lv_i18n_get_id(phrase, plural_idx, sizeof(plural_idx) / sizeof(plural_idx[0]));
 }
 
 #endif
