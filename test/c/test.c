@@ -215,18 +215,11 @@ void test_empty_plurals_fallback(void)
 
 void test_empty_content_check(void)
 {
-#ifdef LV_I18N_OPTIMIZE
     static const char * en_gb_singulars[] = {
          NULL, // 1=s_en_only
          NULL, // 2=s_translated
          NULL, // 3="s_untranslated"
-   };
-#else
-    static lv_i18n_phrase_t en_gb_singulars[] = {
-        {"s_empty", NULL},
-        {NULL, NULL} // End mark
     };
-#endif
 
     static const lv_i18n_lang_t en_gb_lang = {
         .locale_name = "en-GB",

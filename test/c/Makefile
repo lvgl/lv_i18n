@@ -24,7 +24,7 @@ default: test
 
 test: test_optimized
 	mkdir -p $(BUILD_DIR)
-	../../lv_i18n.js compile -t ../../support/template_data.yml -o build/ -l en-GB
+	../../lv_i18n.js compile -t ../../support/template_data.yml -o $(BUILD_DIR) -l en-GB
 	$(CC) $(CFLAGS) $(DEFINES) $(INC_DIR) $(SRC) -o $(TARGET)
 	./$(TARGET)
 
@@ -54,6 +54,14 @@ test:
 
 test_optimized:
 	mkdir -p $(BUILD_DIR)
-	../../lv_i18n.js compile -t ../../support/template_data.yml --optimize -o build/ -l en-GB
+	../../lv_i18n.js compile -t ../../support/template_data.yml --optimize -o $(BUILD_DIR) -l en-GB
 	$(CC) $(CFLAGS) $(DEFINES) $(INC_DIR) unity/src/unity.c build/lv_i18n.c test.c -o $(TARGET)
 	./$(TARGET)
+
+
+c:
+	$(CC) $(CFLAGS) $(DEFINES) -I combined-sample-2 $(INC_DIR) unity/src/unity.c combined-sample-2/lv_i18n.c test.c -o $(TARGET)
+	./$(TARGET)
+	$(CC) $(CFLAGS) -DLV_I18N_OPTIMIZE $(DEFINES) -I combined-sample-2 $(INC_DIR) unity/src/unity.c combined-sample-2/lv_i18n.c test.c -o $(TARGET)
+	./$(TARGET)
+
