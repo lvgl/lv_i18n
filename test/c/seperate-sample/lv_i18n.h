@@ -8,6 +8,8 @@ extern "C" {
 #include <stdint.h>
 #include <string.h>
 
+////////////////////////////////////////////////////////////////////////////////
+
 typedef enum {
     LV_I18N_PLURAL_TYPE_ZERO,
     LV_I18N_PLURAL_TYPE_ONE,
@@ -23,6 +25,24 @@ typedef struct {
     const char * translation;
 } lv_i18n_phrase_t;
 
+#ifdef LV_I18N_OPTIMIZE
+  
+// Here are the definitions for lv_i18n_get_text_by_idx(), that uses integer
+// as keys instead of strings.
+#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?1: \\
+			   (!strcmp(str, "s_translated")?2: \\
+			   (!strcmp(str, "s_untranslated")?3: \\
+			    0)))
+
+typedef struct {
+    const char * locale_name;
+    const char * * singulars;
+    lv_i18n_phrase_t * plurals[_LV_I18N_PLURAL_TYPE_NUM];
+    uint8_t (*locale_plural_fn)(int32_t num);
+} lv_i18n_lang_t;
+
+#else
+
 typedef struct {
     const char * locale_name;
     lv_i18n_phrase_t * singulars;
@@ -30,9 +50,10 @@ typedef struct {
     uint8_t (*locale_plural_fn)(int32_t num);
 } lv_i18n_lang_t;
 
+#endif
+  
 // Null-terminated list of languages. First one used as default.
 typedef const lv_i18n_lang_t * lv_i18n_language_pack_t;
-
 
 extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
 
@@ -54,6 +75,18 @@ int lv_i18n_init_default(void);
  */
 int lv_i18n_set_locale(const char * l_name);
 
+#ifdef LV_I18N_OPTIMIZE
+
+/**
+ * Get the translation from a message ID
+ * @param msg_id message ID
+ * @param msg_index the index of the msg_id
+ * @return the translation of `msg_id` on the set local
+ */
+const char * lv_i18n_get_text_by_idx(const char * msg_id, int msg_index);
+
+#else
+  
 /**
  * Get the translation from a message ID
  * @param msg_id message ID
@@ -61,6 +94,8 @@ int lv_i18n_set_locale(const char * l_name);
  */
 const char * lv_i18n_get_text(const char * msg_id);
 
+#endif
+  
 /**
  * Get the translation from a message ID and apply the language's plural rule to get correct form
  * @param msg_id message ID
@@ -78,9 +113,13 @@ const char * lv_i18n_get_current_locale(void);
 
 void __lv_i18n_reset(void);
 
-
+#ifdef LV_I18N_OPTIMIZE
+#define _(text) lv_i18n_get_text_by_idx(text, LV_I18N_IDX_s(text))
+#define _p(text, num) lv_i18n_get_text_plural(text, num)
+#else
 #define _(text) lv_i18n_get_text(text)
 #define _p(text, num) lv_i18n_get_text_plural(text, num)
+#endif
 
 
 #ifdef __cplusplus
