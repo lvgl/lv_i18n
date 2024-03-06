@@ -25,8 +25,8 @@ typedef struct {
 
 typedef struct {
     const char * locale_name;
-    lv_i18n_phrase_t * singulars;
-    lv_i18n_phrase_t * plurals[_LV_I18N_PLURAL_TYPE_NUM];
+    const lv_i18n_phrase_t * singulars;
+    const lv_i18n_phrase_t * plurals[_LV_I18N_PLURAL_TYPE_NUM];
     uint8_t (*locale_plural_fn)(int32_t num);
 } lv_i18n_lang_t;
 
