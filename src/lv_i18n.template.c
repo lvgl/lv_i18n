@@ -181,7 +181,7 @@ int lv_i18n_set_locale(const char * l_name)
 }
 
 
-static const char * __lv_i18n_get_text_core(lv_i18n_phrase_t * trans, const char * msg_id)
+static const char * __lv_i18n_get_text_core(const lv_i18n_phrase_t * trans, const char * msg_id)
 {
     uint16_t i;
     for(i = 0; trans[i].msg_id != NULL; i++) {
