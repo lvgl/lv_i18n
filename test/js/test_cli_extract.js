@@ -54,6 +54,10 @@ describe('CLI extract', function () {
     run([ 'extract', '-s', join(__dirname, 'fixtures/empty_src.c'), '-t', 'any-value' ]);
   });
 
+  it('Should exit without error with sourceref', function () {
+    run([ 'extract', '-s', join(fixtures, 'src_*.c'), '--dump-sourceref', join(fixtures, 'sourceref'),
+      '-t', join(fixtures, 'empty_en-GB.yml') ]);
+  });
 
   it('Should fill empty locales', function () {
     run([ 'extract', '-s', join(fixtures, 'src_*.c'), '-t', join(fixtures, 'empty_*.yml') ]);
