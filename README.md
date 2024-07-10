@@ -151,7 +151,7 @@ Running `compile`:
 lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n'
 ```
 
-The deafult locale is `en-GB` but you change it with `-l 'language-code'`.
+The default locale is `en-GB` but you change it with `-l 'language-code'`.
 
 ## Follow modifications in the source code
 To change a text id in the `yml` files use:
