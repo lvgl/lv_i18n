@@ -130,7 +130,7 @@ en-GB:
 
 ## Add the translations into the yml files
 
-The naming conventions in the `yml` files follow the rules of [CLDR](http://cldr.unicode.org/translation/language-names) so most of the translation offices will know them.
+The naming conventions in the `yml` files follow the rules of [CLDR](https://cldr.unicode.org/translation/displaynames/languagelocale-names) so most of the translation offices will know them.
 
 Example:
 
