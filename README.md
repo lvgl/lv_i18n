@@ -102,7 +102,7 @@ For each translation, you need to create a `yml` file with "language code" name.
 
 Here is a [list](https://www.andiamo.co.uk/resources/iso-language-codes/) of the language and locale codes.
 
-Add the `locale-name: ~` line to the `yml` files. Replace "language-code" with the actual language code.   
+Add the `locale-name: ~` line to the `yml` files. Replace "locale-name" with the actual language code.   
 E.g.: `en-GB: ~` or simply `en: ~`
 
 Technically you can have one `yml` file where you list all language codes you need but its more modular to separate them.
@@ -130,7 +130,7 @@ en-GB:
 
 ## Add the translations into the yml files
 
-The naming conventions in the `yml` files follow the rules of [CLDR](http://cldr.unicode.org/translation/language-names) so most of the translation offices will know them.
+The naming conventions in the `yml` files follow the rules of [CLDR](https://cldr.unicode.org/translation/displaynames/languagelocale-names) so most of the translation offices will know them.
 
 Example:
 
@@ -151,7 +151,7 @@ Running `compile`:
 lv_i18n compile -t 'translations/*.yml' -o 'src/lv_i18n'
 ```
 
-The deafult locale is `en-GB` but you change it with `-l 'language-code'`.
+The default locale is `en-GB` but you change it with `-l 'language-code'`.
 
 ## Follow modifications in the source code
 To change a text id in the `yml` files use:
