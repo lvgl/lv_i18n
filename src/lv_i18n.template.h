@@ -35,6 +35,9 @@ typedef const lv_i18n_lang_t * lv_i18n_language_pack_t;
 extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
 
 /*SAMPLE_START*/
+#undef LV_I18N_OPTIMIZE
+#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?0:(!strcmp(str, "s_translated")?1:(!strcmp(str, "s_untranslated")?2:LV_I18N_ID_NOT_FOUND)))
+#define LV_I18N_IDX_p(str) (!strcmp(str, "p_i_have_dogs")?0:LV_I18N_ID_NOT_FOUND)
 
 /*SAMPLE_END*/
 

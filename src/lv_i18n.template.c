@@ -23,6 +23,20 @@ static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_e(uint32_t val) { UNUSED(val); return 0; }
 
+static const char * en_gb_singulars[] = {
+  "english only", // 0="s_en_only"
+  "s translated", // 1="s_translated"
+  NULL, // 2="s_untranslated"
+};
+
+static const char * en_gb_plurals_one[] = {
+  "I have %d dog", // 0="p_i_have_dogs"
+};
+
+static const char * en_gb_plurals_other[] = {
+  "I have %d dogs", // 0="p_i_have_dogs"
+};
+
 static uint8_t en_gb_plural_fn(int32_t num)
 {
     uint32_t n = op_n(num); UNUSED(n);
@@ -32,6 +46,32 @@ static uint8_t en_gb_plural_fn(int32_t num)
     if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
+
+static const lv_i18n_lang_t en_gb_lang = {
+    .locale_name = "en-GB",
+    .singulars = en_gb_singulars,
+    .plurals[LV_I18N_PLURAL_TYPE_ONE] = en_gb_plurals_one,
+    .plurals[LV_I18N_PLURAL_TYPE_OTHER] = en_gb_plurals_other,
+    .locale_plural_fn = en_gb_plural_fn
+};
+
+static const char * ru_ru_singulars[] = {
+  NULL, // 0="s_en_only"
+  "s переведено", // 1="s_translated"
+  NULL, // 2="s_untranslated"
+};
+
+static const char * ru_ru_plurals_one[] = {
+  "У меня %d собакен", // 0="p_i_have_dogs"
+};
+
+static const char * ru_ru_plurals_few[] = {
+  "У меня %d собакена", // 0="p_i_have_dogs"
+};
+
+static const char * ru_ru_plurals_many[] = {
+  "У меня %d собакенов", // 0="p_i_have_dogs"
+};
 
 static uint8_t ru_ru_plural_fn(int32_t num)
 {
@@ -46,47 +86,6 @@ static uint8_t ru_ru_plural_fn(int32_t num)
     return LV_I18N_PLURAL_TYPE_OTHER;
 }
 
-static const char * en_gb_singulars[] = {
-  "english only", // 1=s_en_only
-  "s translated", // 2=s_translated
-  NULL, // 3="s_untranslated"
-};
-
-static const char * en_gb_plurals_one[] = {
-    "I have %d dog",
-};
-
-static const char * en_gb_plurals_other[] = {
-    "I have %d dogs",
-};
-
-static const char * ru_ru_singulars[] = {
-  NULL, // 1="s_en_only"
-  "s переведено", // 2=s_translated
-  NULL, // 3="s_untranslated"
-};
-
-static const char * ru_ru_plurals_one[] = {
-  "У меня %d собакен",     // 1="p_i_have_dogs"
-};
-
-static const char * ru_ru_plurals_few[] = {
-  "У меня %d собакена",    // 1="p_i_have_dogs"
-};
-
-static const char * ru_ru_plurals_many[] = {
-  "У меня %d собакенов",   // 1="p_i_have_dogs"
-};
-
-
-static const lv_i18n_lang_t en_gb_lang = {
-    .locale_name = "en-GB",
-    .singulars = en_gb_singulars,
-    .plurals[LV_I18N_PLURAL_TYPE_ONE] = en_gb_plurals_one,
-    .plurals[LV_I18N_PLURAL_TYPE_OTHER] = en_gb_plurals_other,
-    .locale_plural_fn = en_gb_plural_fn
-};
-
 static const lv_i18n_lang_t ru_ru_lang = {
     .locale_name = "ru-RU",
     .singulars = ru_ru_singulars,
@@ -96,25 +95,46 @@ static const lv_i18n_lang_t ru_ru_lang = {
     .locale_plural_fn = ru_ru_plural_fn
 };
 
+static uint8_t de_de_plural_fn(int32_t num)
+{
+    uint32_t n = op_n(num); UNUSED(n);
+    uint32_t i = op_i(n); UNUSED(i);
+    uint32_t v = op_v(n); UNUSED(v);
+
+    if ((i == 1 && v == 0)) return LV_I18N_PLURAL_TYPE_ONE;
+    return LV_I18N_PLURAL_TYPE_OTHER;
+}
+
+static const lv_i18n_lang_t de_de_lang = {
+    .locale_name = "de-DE",
+
+
+    .locale_plural_fn = de_de_plural_fn
+};
+
 const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
     &en_gb_lang,
     &ru_ru_lang,
+    &de_de_lang,
     NULL // End mark
 };
 
 #ifndef LV_I18N_OPTIMIZE
 
 static const char * singular_idx[] = {
-    "s_en_only",
-    "s_translated",
-    "s_untranslated"
+"s_en_only",
+"s_translated",
+"s_untranslated",
+
 };
 
 static const char * plural_idx[] = {
-    "p_i_have_dogs"
+"p_i_have_dogs",
+
 };
 
 #endif
+
 
 /*SAMPLE_END*/
 
