@@ -4,6 +4,8 @@
 static const lv_i18n_language_pack_t * current_lang_pack;
 static const lv_i18n_lang_t * current_lang;
 
+/*SAMPLE_START*/
+
 ////////////////////////////////////////////////////////////////////////////////
 // Define plural operands
 // http://unicode.org/reports/tr35/tr35-numbers.html#Operands
@@ -100,6 +102,21 @@ const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
     NULL // End mark
 };
 
+#ifndef LV_I18N_OPTIMIZE
+
+static const char * singular_idx[] = {
+    "s_en_only",
+    "s_translated",
+    "s_untranslated"
+};
+
+static const char * plural_idx[] = {
+    "p_i_have_dogs"
+};
+
+#endif
+
+/*SAMPLE_END*/
 
 /**
  * Get the translation from a message ID
@@ -180,16 +197,6 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
 
 #else
 // Fallback for ancient compilers, search phrase IDs in runtime (slow)
-
-static const char * singular_idx[] = {
-    "s_en_only",
-    "s_translated",
-    "s_untranslated"
-};
-
-static const char * plural_idx[] = {
-    "p_i_have_dogs"
-};
 
 static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
 {

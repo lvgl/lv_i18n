@@ -34,6 +34,9 @@ typedef const lv_i18n_lang_t * lv_i18n_language_pack_t;
 
 extern const lv_i18n_language_pack_t lv_i18n_language_pack[];
 
+/*SAMPLE_START*/
+
+/*SAMPLE_END*/
 
 /**
  * Get the translation from a message ID
@@ -53,16 +56,6 @@ const char * lv_i18n_get_singular_by_idx(const char * msg_id, int msg_index);
 const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32_t num);
 
 #ifdef LV_I18N_OPTIMIZE
-
-// Here are the definitions for fast indexed lookup, that uses integer
-// as keys instead of strings.
-#define LV_I18N_IDX_s(str) (!strcmp(str, "s_en_only")?0:      \
-			   (!strcmp(str, "s_translated")?1:   \
-			   (!strcmp(str, "s_untranslated")?2: \
-			    LV_I18N_ID_NOT_FOUND)))
-
-#define LV_I18N_IDX_p(str) (!strcmp(str, "p_i_have_dogs")?0:  \
-			    LV_I18N_ID_NOT_FOUND)
 
 #define _(text) lv_i18n_get_singular_by_idx(text, LV_I18N_IDX_s(text))
 #define _p(text, num) lv_i18n_get_plural_by_idx(text, LV_I18N_IDX_p(text), num)
