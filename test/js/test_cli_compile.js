@@ -18,9 +18,11 @@ describe('CLI compile', function () {
   });
 
   it('Should compile template data (raw)', function () {
-    run([ 'compile', '-t', demo_data_path, '--raw', join(fixtures_tmp_dir, 'out.raw') ]);
+    run([ 'compile', '-t', demo_data_path,
+      '--raw', join(fixtures_tmp_dir, 'out.raw') ]);
 
     assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'out.raw')));
+    assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'out.h')));
   });
 
   it('Should compile template data (.c/.h)', function () {
@@ -28,6 +30,14 @@ describe('CLI compile', function () {
 
     assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'lv_i18n.h')));
     assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'lv_i18n.c')));
+  });
+
+  it('Should compile optimized (raw)', function () {
+    run([ 'compile', '-t', demo_data_path, '--optimize',
+      '--raw', join(fixtures_tmp_dir, 'out.raw') ]);
+
+    assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'out.raw')));
+    assert.ok(shell.test('-f', join(fixtures_tmp_dir, 'out.h')));
   });
 
   it('Should fail on missed files', function () {

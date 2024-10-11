@@ -37,7 +37,7 @@ describe('newlines', function () {
 
     let compiled_src = readFileSync(join(fixtures_tmp_dir, 'lv_i18n.c')).toString();
 
-    assert.match(compiled_src, /{"line1\\nline2\\ttext\\nline3", "строка1\\nстрока2\\tтекст\\nстрока3"},/);
+    assert.match(compiled_src, /"строка1\\nстрока2\\tтекст\\nстрока3",/);
   });
 
   afterEach(function () {

@@ -1,6 +1,6 @@
 #include "unity.h"
 #include <stdio.h>
-#include "../../src/lv_i18n.h"
+#include "lv_i18n.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -215,9 +215,10 @@ void test_empty_plurals_fallback(void)
 
 void test_empty_content_check(void)
 {
-    static lv_i18n_phrase_t en_gb_singulars[] = {
-        {"s_empty", NULL},
-        {NULL, NULL} // End mark
+    static const char * en_gb_singulars[] = {
+         NULL, // 1=s_en_only
+         NULL, // 2=s_translated
+         NULL, // 3="s_untranslated"
     };
 
     static const lv_i18n_lang_t en_gb_lang = {
