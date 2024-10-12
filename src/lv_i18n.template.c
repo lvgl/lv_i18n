@@ -8,8 +8,6 @@
 
 // Integer version, simplified
 
-// TEST
-//
 #define UNUSED(x) (void)(x)
 
 static inline uint32_t op_n(int32_t val) { return (uint32_t)(val < 0 ? -val : val); }
