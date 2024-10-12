@@ -11,9 +11,9 @@ jobs:
       fail-fast: true
       matrix:
         node-version: [18, 20]
-	# Use different OS to have different C compilers:
+        # Use different OS to have different C compilers:
         os-version: [ubuntu-latest, ubuntu-22.04, ubuntu-20.04]
-	# macos-14-large, macos-14, macos-13-large, macos-13, 
+        # macos-14-large, macos-14, macos-13-large, macos-13, 
 
     name: "Tests (OS: ${{ matrix.os-version }} Node: ${{ matrix.node-version }})"
     runs-on: ${{ matrix.os-version }}
