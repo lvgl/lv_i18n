@@ -13,13 +13,13 @@ jobs:
         node-version:
           - 18
           - 20
-    name: "Tests"
+    name: "Tests (Node: ${{ matrix.node-version }})"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ matrix.node-version }}
     
       - run: npm i lv_i18n -s
       - run: cd test/c ; make test-deps
