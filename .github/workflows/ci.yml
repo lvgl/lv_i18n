@@ -16,5 +16,6 @@ jobs:
           node-version: 18
     
       - run: npm i lv_i18n -s
+      - run: cd test/c ; make test-deps
       - run: make test
 
