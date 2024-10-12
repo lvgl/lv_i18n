@@ -11,12 +11,12 @@ jobs:
       fail-fast: true
       matrix:
         node-version: [18, 20]
-        compiler-version: [gcc, gcc-8, clang]
+	# Use different OS to have different C compilers:
+        os-version: [ubuntu-latest, ubuntu-22.04, ubuntu-20.04]
+	# macos-14-large, macos-14, macos-13-large, macos-13, 
 
-    name: "Tests (Node: ${{ matrix.node-version }})"
-    env:
-      CC: ${{ matrix.compiler-version }}
-    runs-on: ubuntu-latest
+    name: "Tests (OS: ${{ matrix.os-version }} Node: ${{ matrix.node-version }})"
+    runs-on: ${{ matrix.os-version }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
