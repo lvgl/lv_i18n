@@ -12,7 +12,7 @@ jobs:
       matrix:
         node-version: [18, 20]
         compiler-version: [gcc, gcc-8, clang]
-	
+
     name: "Tests (Node: ${{ matrix.node-version }})"
     env:
       CC: ${{ matrix.compiler-version }}
