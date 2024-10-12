@@ -7,6 +7,12 @@ on:
 jobs:
 
   tests:
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version:
+          - 18
+          - 20
     name: "Tests"
     runs-on: ubuntu-latest
     steps:
