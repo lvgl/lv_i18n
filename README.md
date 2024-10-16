@@ -141,6 +141,9 @@ Example:
     one: One user is logged in
     other: '%d users are logged in'
 ```
+
+If translators want to know where a message comes from, then use `lv_i18n extract --dump-sourceref sr.json ...` to generate the file `sr.json` containing file names and line number of each message.
+
 ## Run compile to convert the yml files to a C and H file
 
 Once you have the translations in the `yml` files you only need to run the `compile` to generate a C and H files from the `yml` files. No other library will be required to get the translation with `_()` and `_p`.
