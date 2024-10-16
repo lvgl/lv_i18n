@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+
+  tests:
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version: [16, 18, 20, 22]
+        # Use different OS to have different C compilers:
+        os-version: [ubuntu-latest, ubuntu-22.04, ubuntu-20.04]
+        # macos-14-large, macos-14, macos-13-large, macos-13
+        # macos currently fails with this and similar
+        # ../../src/lv_i18n.template.c:207:28: error: mixing declarations and code is incompatible with standards before C99 [-Werror,-Wdeclaration-after-statement]
+        #    const lv_i18n_lang_t * lang = current_lang;
+
+    name: "Tests (OS: ${{ matrix.os-version }} Node: ${{ matrix.node-version }})"
+    runs-on: ${{ matrix.os-version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+    
+      - run: npm i lv_i18n -s
+      - run: cd test/c ; make test-deps
+      - run: make test
+
