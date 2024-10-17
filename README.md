@@ -1,7 +1,7 @@
 lv_i18n - Internationalization for LittlevGL
 ============================================
 
-[![Build Status](https://img.shields.io/travis/lvgl/lv_i18n/master.svg?style=flat)](https://travis-ci.org/lvgl/lv_i18n)
+[![Build Status](https://github.com/lvgl/lv_i18n/actions/workflows/.github/workflows/ci.yml/badge.svg)](https://github.com/lvgl/lv_i18n/actions/workflows/ci.yml)
 [![NPM version](https://img.shields.io/npm/v/lv_i18n.svg?style=flat)](https://www.npmjs.org/package/lv_i18n)
 
 Lightweight [gettext](https://www.gnu.org/software/gettext/) replacement
