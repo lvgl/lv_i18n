@@ -7,6 +7,8 @@ extract:
 
 compile:
 	../lv_i18n.js compile -l en-GB -t "translations/*.yml" -o .
+	ls -l
+	tree
 
 compile-optimized:
 	../lv_i18n.js compile --optimize -l en-GB -t "translations/*.yml" -o .
