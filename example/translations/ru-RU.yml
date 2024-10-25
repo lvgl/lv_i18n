@@ -1,0 +1,9 @@
+ru-RU:
+  s_en_only: ~
+  s_translated: s переведено
+  s_untranslated: ~
+  p_i_have_dogs:
+    one: У меня %d собакен
+    few: У меня %d собакена
+    many: У меня %d собакенов
+    other: ~
