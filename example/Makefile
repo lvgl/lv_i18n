@@ -7,11 +7,15 @@ extract:
 
 compile:
 	../lv_i18n.js compile -l en-GB -t "translations/*.yml" -o .
-	ls -l
-	tree
 
 compile-optimized:
 	../lv_i18n.js compile --optimize -l en-GB -t "translations/*.yml" -o .
+
+main.o: main.c
+	$(CC) -c -o main.o main.c
+
+lv_i18n.o: lv_i18n.c
+	$(CC) -c -o lv_i18n.o lv_i18n.c
 
 main: main.o lv_i18n.o
 	$(CC) -o main main.o lv_i18n.o
