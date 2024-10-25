@@ -15,7 +15,7 @@ void use_i18n(void)
     }
 }
 
-void main(void)
+int main(void)
 {
   lv_i18n_init(lv_i18n_language_pack);
 
@@ -26,5 +26,7 @@ void main(void)
   lv_i18n_set_locale("ru-RU");
   puts("ru-RU:");
   use_i18n();
+
+  return 0;
 }
 
