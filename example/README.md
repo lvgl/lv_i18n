@@ -65,7 +65,3 @@ added and implement a proper translation for "en-GB" and "ru-RU".
 
 Then follow above to "make compile" and "make main" to compile the
 library and application and see the new key being translated.
-
-
-
-
