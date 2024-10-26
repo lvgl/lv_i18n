@@ -176,7 +176,7 @@ lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 ## Example application
 
 You can find a complete example application inside the `example/`
-direcorty. Please see [Example README](example/README.md) for more
+directory. Please see [Example README](example/README.md) for more
 information.
 
 ## C API
