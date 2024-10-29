@@ -1,0 +1,7 @@
+en-GB:
+  s_en_only: english only
+  s_translated: s translated
+  s_untranslated: ~
+  p_i_have_dogs:
+    one: I have %d dog
+    other: I have %d dogs

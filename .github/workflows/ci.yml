@@ -29,4 +29,6 @@ jobs:
       - run: npm i lv_i18n -s
       - run: cd test/c ; make test-deps
       - run: make test
+      - run: cd example && make example && ./main
+      - run: cd example && make example-optimized && ./main
 

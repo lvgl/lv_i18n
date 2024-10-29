@@ -173,6 +173,12 @@ To change a text id in the `yml` files use:
 lv_i18n rename -t src/i18n/*.yml --from 'Hillo wold' --to 'Hello world!'
 ```
 
+## Example application
+
+You can find a complete example application inside the `example/`
+directory. Please see [Example README](example/README.md) for more
+information.
+
 ## C API
 
 #### int lv_i18n_init(const lv_i18n_language_pack_t * langs)
