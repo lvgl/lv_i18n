@@ -87,13 +87,13 @@ int lv_i18n_init_default(void);
 
 /**
  * Change the localization (language)
- * @param l_name name of the translation locale to use. E.g. "en_GB"
+ * @param l_name name of the translation locale to use. E.g. "en-GB"
  */
 int lv_i18n_set_locale(const char * l_name);
 
 /**
- * Get the name of the currently used localization.
- * @return name of the currently used localization. E.g. "en_GB"
+ * Get the name of the currently used locale.
+ * @return name of the currently used locale. E.g. "en-GB"
  */
 const char * lv_i18n_get_current_locale(void);
 
