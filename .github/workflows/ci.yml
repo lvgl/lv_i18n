@@ -12,7 +12,7 @@ jobs:
       matrix:
         node-version: [16, 18, 20, 22]
         # Use different OS to have different C compilers:
-        os-version: [ubuntu-latest, ubuntu-22.04, ubuntu-20.04]
+        os-version: [ubuntu-latest, ubuntu-22.04, ubuntu-24.04]
         # macos-14-large, macos-14, macos-13-large, macos-13
         # macos currently fails with this and similar
         # ../../src/lv_i18n.template.c:207:28: error: mixing declarations and code is incompatible with standards before C99 [-Werror,-Wdeclaration-after-statement]
