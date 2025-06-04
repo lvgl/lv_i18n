@@ -1,5 +1,5 @@
-lv_i18n - Internationalization for LittlevGL
-============================================
+lv_i18n - Internationalization for LVGL
+=======================================
 
 [![Build Status](https://github.com/lvgl/lv_i18n/actions/workflows/.github/workflows/ci.yml/badge.svg)](https://github.com/lvgl/lv_i18n/actions/workflows/ci.yml)
 [![NPM version](https://img.shields.io/npm/v/lv_i18n.svg?style=flat)](https://www.npmjs.org/package/lv_i18n)
@@ -32,7 +32,7 @@ npm i lv_i18n -g
 Install from github's repo, master branch
 
 ```sh
-npm i littlevgl/lv_i18n -g
+npm i lvgl/lv_i18n -g
 ```
 
 If you wish local install for your project, do in project root:
@@ -53,7 +53,7 @@ execute packages "without install":
 
 ```sh
 # run from github master
-npx github:littlevgl/lv_i18n -h
+npx github:lvgl/lv_i18n -h
 # run from npm registry
 npx lv_i18n -h
 ```
