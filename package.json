@@ -1,12 +1,12 @@
 {
   "name": "lv_i18n",
   "version": "0.2.1",
-  "description": "CLI tools for LittlevGL i18n support.",
+  "description": "CLI tools for LVGL i18n support.",
   "keywords": [
     "i18n",
     "internationalization"
   ],
-  "repository": "littlevgl/lv_i18n",
+  "repository": "lvgl/lv_i18n",
   "license": "MIT",
   "files": [
     "lv_i18n.js",
