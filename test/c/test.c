@@ -237,6 +237,91 @@ void test_empty_content_check(void)
     TEST_ASSERT_EQUAL_STRING(_("s_empty"), "s_empty");
 }
 
+////////////////////////////////////////////////////////////////////////////////
+
+void test_get_msg_id_should_work_for_singular(void)
+{
+    lv_i18n_init(lv_i18n_language_pack);
+
+    // Test English
+    lv_i18n_set_locale("en-GB");
+    const char * msg_id = lv_i18n_get_msg_id("s translated");
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "s_translated");
+
+    // Test Russian
+    lv_i18n_set_locale("ru-RU");
+    msg_id = lv_i18n_get_msg_id("s переведено");
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "s_translated");
+
+    // Test fallback to default locale
+    msg_id = lv_i18n_get_msg_id("english only");
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "s_en_only");
+}
+
+void test_get_msg_id_should_work_for_plural(void)
+{
+    lv_i18n_init(lv_i18n_language_pack);
+
+    // Test English plural forms - use _p() macro to get format strings
+    lv_i18n_set_locale("en-GB");
+    const char * msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 1));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+
+    msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 2));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+
+    msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 5));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+
+    // Test Russian plural forms - use _p() macro to get format strings
+    lv_i18n_set_locale("ru-RU");
+    msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 1));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+
+    msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 2));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+
+    msg_id = lv_i18n_get_msg_id(_p("p_i_have_dogs", 5));
+    TEST_ASSERT_NOT_NULL(msg_id);
+    TEST_ASSERT_EQUAL_STRING(msg_id, "p_i_have_dogs");
+}
+
+void test_get_msg_id_should_return_original_text_for_not_found(void)
+{
+    lv_i18n_init(lv_i18n_language_pack);
+
+    lv_i18n_set_locale("en-GB");
+    const char * msg_id = lv_i18n_get_msg_id("not existing text");
+    TEST_ASSERT_EQUAL_STRING(msg_id, "not existing text");
+
+    lv_i18n_set_locale("ru-RU");
+    msg_id = lv_i18n_get_msg_id("несуществующий текст");
+    TEST_ASSERT_EQUAL_STRING(msg_id, "несуществующий текст");
+}
+
+void test_get_msg_id_should_return_NULL_for_NULL_input(void)
+{
+    lv_i18n_init(lv_i18n_language_pack);
+
+    const char * msg_id = lv_i18n_get_msg_id(NULL);
+    TEST_ASSERT_NULL(msg_id);
+}
+
+void test_get_msg_id_should_return_original_text_before_init(void)
+{
+    __lv_i18n_reset();
+
+    const char * msg_id = lv_i18n_get_msg_id("s translated");
+    TEST_ASSERT_EQUAL_STRING(msg_id, "s translated");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -270,6 +355,13 @@ int main(void)
     RUN_TEST(test_empty_base_tables_fallback);
     RUN_TEST(test_empty_plurals_fallback);
     RUN_TEST(test_empty_content_check);
+
+    // lv_i18n_get_msg_id
+    RUN_TEST(test_get_msg_id_should_work_for_singular);
+    RUN_TEST(test_get_msg_id_should_work_for_plural);
+    RUN_TEST(test_get_msg_id_should_return_original_text_for_not_found);
+    RUN_TEST(test_get_msg_id_should_return_NULL_for_NULL_input);
+    RUN_TEST(test_get_msg_id_should_return_original_text_before_init);
 
     return UNITY_END();
 }

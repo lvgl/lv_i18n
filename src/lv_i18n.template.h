@@ -97,6 +97,13 @@ int lv_i18n_set_locale(const char * l_name);
  */
 const char * lv_i18n_get_current_locale(void);
 
+/**
+ * Get the message ID from translated text
+ * @param translated_text the translated text to look up
+ * @return the message ID (msg_id) corresponding to the translated text, or NULL if not found
+ */
+const char * lv_i18n_get_msg_id(const char * translated_text);
+
 
 void __lv_i18n_reset(void);
 

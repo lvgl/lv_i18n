@@ -218,10 +218,11 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
 #else
 // Fallback for ancient compilers, search phrase IDs in runtime (slow)
 
-static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
+static int __lv_i18n_get_id(const char * phrase, const char * * list)
 {
     uint16_t i;
-    for(i = 0; i < len; i++) {
+    // Array is NULL-terminated (added by generate_idx for reverse lookup)
+    for(i = 0; list[i] != NULL; i++) {
         if(strcmp(list[i], phrase) == 0) return i;
     }
     return LV_I18N_ID_NOT_FOUND;
@@ -229,15 +230,107 @@ static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
 
 int lv_i18n_get_singular_id(const char * phrase)
 {
-    return __lv_i18n_get_id(phrase, singular_idx, sizeof(singular_idx) / sizeof(singular_idx[0]));
+    return __lv_i18n_get_id(phrase, singular_idx);
 }
 
 int lv_i18n_get_plural_id(const char * phrase)
 {
-    return __lv_i18n_get_id(phrase, plural_idx, sizeof(plural_idx) / sizeof(plural_idx[0]));
+    return __lv_i18n_get_id(phrase, plural_idx);
 }
 
 #endif
+
+/**
+ * Helper function to search for translated text in singulars array and return the index
+ */
+static int __lv_i18n_find_singular_index(const char * translated_text)
+{
+    if(current_lang == NULL || translated_text == NULL) return LV_I18N_ID_NOT_FOUND;
+
+    const lv_i18n_lang_t * lang = current_lang;
+    
+    // Access singular_idx array defined in the generated code
+    extern const char * singular_idx[];
+    
+    // Calculate array size - this works because the array is defined in this compilation unit
+    uint16_t singular_count = 0;
+    while(singular_idx[singular_count] != NULL) {
+        singular_count++;
+        // Safety check to prevent infinite loop
+        if(singular_count > 10000) break;
+    }
+
+    // Search in current locale
+    if(lang->singulars != NULL) {
+        for(uint16_t i = 0; i < singular_count; i++) {
+            if(lang->singulars[i] != NULL && strcmp(lang->singulars[i], translated_text) == 0) {
+                return i;
+            }
+        }
+    }
+
+    // Try to fallback to default locale
+    if(lang != current_lang_pack[0]) {
+        lang = current_lang_pack[0];
+        if(lang->singulars != NULL) {
+            for(uint16_t i = 0; i < singular_count; i++) {
+                if(lang->singulars[i] != NULL && strcmp(lang->singulars[i], translated_text) == 0) {
+                    return i;
+                }
+            }
+        }
+    }
+
+    return LV_I18N_ID_NOT_FOUND;
+}
+
+/**
+ * Helper function to search for translated text in plurals array and return the index
+ */
+static int __lv_i18n_find_plural_index(const char * translated_text)
+{
+    if(current_lang == NULL || translated_text == NULL) return LV_I18N_ID_NOT_FOUND;
+
+    const lv_i18n_lang_t * lang = current_lang;
+    
+    // Access plural_idx array defined in the generated code
+    extern const char * plural_idx[];
+    
+    // Calculate array size - this works because the array is defined in this compilation unit
+    uint16_t plural_count = 0;
+    while(plural_idx[plural_count] != NULL) {
+        plural_count++;
+        // Safety check to prevent infinite loop
+        if(plural_count > 10000) break;
+    }
+
+    // Search in current locale
+    for(int ptype = 0; ptype < _LV_I18N_PLURAL_TYPE_NUM; ptype++) {
+        if(lang->plurals[ptype] != NULL) {
+            for(uint16_t i = 0; i < plural_count; i++) {
+                if(lang->plurals[ptype][i] != NULL && strcmp(lang->plurals[ptype][i], translated_text) == 0) {
+                    return i;
+                }
+            }
+        }
+    }
+
+    // Try to fallback to default locale
+    if(lang != current_lang_pack[0]) {
+        lang = current_lang_pack[0];
+        for(int ptype = 0; ptype < _LV_I18N_PLURAL_TYPE_NUM; ptype++) {
+            if(lang->plurals[ptype] != NULL) {
+                for(uint16_t i = 0; i < plural_count; i++) {
+                    if(lang->plurals[ptype][i] != NULL && strcmp(lang->plurals[ptype][i], translated_text) == 0) {
+                        return i;
+                    }
+                }
+            }
+        }
+    }
+
+    return LV_I18N_ID_NOT_FOUND;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -304,4 +397,32 @@ const char * lv_i18n_get_current_locale(void)
 {
     if(!current_lang) return NULL;
     return current_lang->locale_name;
+}
+
+/**
+ * Get the message ID from translated text
+ * @param translated_text the translated text to look up
+ * @return the message ID (msg_id) corresponding to the translated text, or NULL if not found
+ */
+const char * lv_i18n_get_msg_id(const char * translated_text)
+{
+    if(translated_text == NULL) return NULL;
+
+    extern const char * singular_idx[];
+    extern const char * plural_idx[];
+
+    // First, try to find in singulars
+    int idx = __lv_i18n_find_singular_index(translated_text);
+    if(idx != LV_I18N_ID_NOT_FOUND) {
+        return singular_idx[idx];
+    }
+
+    // Then, try to find in plurals
+    idx = __lv_i18n_find_plural_index(translated_text);
+    if(idx != LV_I18N_ID_NOT_FOUND) {
+        return plural_idx[idx];
+    }
+
+    // Not found
+    return translated_text;
 }
