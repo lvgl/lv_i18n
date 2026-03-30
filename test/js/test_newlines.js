@@ -9,8 +9,8 @@ const { readFileSync }  = require('fs');
 
 const { run }           = require('../../lib/cli');
 
-const fixtures_src_dir = join(__dirname, 'fixtures/newlines');
-const fixtures_tmp_dir = join(__dirname, 'fixtures/newlines.tmp');
+const fixtures_src_dir = join(__dirname, 'fixtures', 'newlines');
+const fixtures_tmp_dir = join(__dirname, 'fixtures', 'newlines.tmp');
 
 
 describe('newlines', function () {
@@ -37,7 +37,7 @@ describe('newlines', function () {
 
     let compiled_src = readFileSync(join(fixtures_tmp_dir, 'lv_i18n.c')).toString();
 
-    assert.match(compiled_src, /"строка1\\nстрока2\\tтекст\\nстрока3",/);
+    assert.match(compiled_src, /"строка1\nстрока2\tтекст\nстрока3\nстрока4\\бекслэш\nстрока5\"кавычка",/);
   });
 
   afterEach(function () {

@@ -12,7 +12,7 @@ describe('SourceKeys', function () {
   it('Should find source files', function () {
     let sk = new SourceKeys();
 
-    sk.loadFiles([ join(__dirname, 'fixtures/file_load/*.+(c|h)') ]);
+    sk.loadFiles([ join(__dirname, 'fixtures', 'file_load', '/*.+(c|h)') ]);
     assert.equal(sk.filesCount, 2);
   });
 
