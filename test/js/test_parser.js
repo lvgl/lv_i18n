@@ -124,7 +124,7 @@ describe('Parser', function () {
 
 
   describe('unescape_c', function () {
-    const test_file = join(__dirname, 'fixtures/c_escapes.yml');
+    const test_file = join(__dirname, 'fixtures', 'c_escapes.yml');
     let tests = yaml.load(readFileSync(test_file));
 
     for (let [ src, dst ] of Object.values(tests)) {

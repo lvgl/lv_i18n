@@ -9,8 +9,8 @@ const { readFileSync }  = require('fs');
 
 const { run }           = require('../../lib/cli');
 
-const fixtures_src_dir  = join(__dirname, 'fixtures/cli_extract');
-const fixtures          = join(__dirname, 'fixtures/cli_extract.tmp');
+const fixtures_src_dir  = join(__dirname, 'fixtures', 'cli_extract');
+const fixtures          = join(__dirname, 'fixtures', 'cli_extract.tmp');
 
 
 describe('CLI extract', function () {
@@ -51,7 +51,7 @@ describe('CLI extract', function () {
   });
 
   it('Should exit without error if no source phrases exist', function () {
-    run([ 'extract', '-s', join(__dirname, 'fixtures/empty_src.c'), '-t', 'any-value' ]);
+    run([ 'extract', '-s', join(__dirname, 'fixtures', 'empty_src.c'), '-t', 'any-value' ]);
   });
 
   it('Should exit without error with sourceref', function () {

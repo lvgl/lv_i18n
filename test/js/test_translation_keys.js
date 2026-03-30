@@ -14,7 +14,7 @@ describe('TranslationKeys', function () {
     it('Should find source files', function () {
       let tk = new TranslationKeys();
 
-      tk.loadFiles([ join(__dirname, 'fixtures/file_load/*.yml') ]);
+      tk.loadFiles([ join(__dirname, 'fixtures', 'file_load', '*.yml') ]);
       assert.equal(tk.filesCount, 1);
     });
 

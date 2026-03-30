@@ -6,9 +6,9 @@ const shell             = require('shelljs');
 const { join }          = require('path');
 const { run }           = require('../../lib/cli');
 
-const fixtures_src_dir  = join(__dirname, 'fixtures/cli_compile');
-const fixtures_tmp_dir  = join(__dirname, 'fixtures/cli_compile.tmp');
-const demo_data_path    = join(__dirname, '../../support/template_data.yml');
+const fixtures_src_dir  = join(__dirname, 'fixtures', 'cli_compile');
+const fixtures_tmp_dir  = join(__dirname, 'fixtures', 'cli_compile.tmp');
+const demo_data_path    = join(__dirname, '..', '..', 'support', 'template_data.yml');
 
 
 describe('CLI compile', function () {
