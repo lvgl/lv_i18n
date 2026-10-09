@@ -3,9 +3,9 @@
 
 const assert            = require('assert');
 const shell             = require('shelljs');
-const yaml              = require('js-yaml');
+const yaml              = require('yaml');
 const { join }          = require('path');
-const { readFileSync }  = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 
 const { run }           = require('../../lib/cli');
 
@@ -24,7 +24,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'foo', '--to', 'new_foo' ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'), 'utf8')),
       {
         'en-GB': {
           new_foo: null,
@@ -37,7 +37,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'), 'utf8')),
       {
         'ru-RU': {
           new_foo: 'фуу',
@@ -55,7 +55,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'new_nail' ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'), 'utf8')),
       {
         'en-GB': {
           foo: null,
@@ -68,7 +68,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'), 'utf8')),
       {
         'ru-RU': {
           foo: 'фуу',
@@ -86,7 +86,7 @@ describe('CLI rename', function () {
     run([ 'rename', '-t', `${fixtures_yaml_path}`, '--from', 'nail', '--to', 'foo' ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'en-GB.yml'), 'utf8')),
       {
         'en-GB': {
           foo: {
@@ -98,7 +98,7 @@ describe('CLI rename', function () {
     );
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'ru-RU.yml'), 'utf8')),
       {
         'ru-RU': {
           foo: {
@@ -127,6 +127,27 @@ describe('CLI rename', function () {
       },
       /Could not find key/
     );
+  });
+
+  it('Should keep key position & comments', function () {
+    let file = join(fixtures_tmp_dir, 'comments.yml');
+
+    writeFileSync(file, `de-DE:
+  # First
+  foo: Foo # foo
+  # Second
+  bar: Bar
+  baz: Baz
+`);
+
+    run([ 'rename', '-t', file, '--from', 'foo', '--to', 'baz' ]);
+
+    assert.strictEqual(readFileSync(file, 'utf8'), `de-DE:
+  # First
+  baz: Foo # foo
+  # Second
+  bar: Bar
+`);
   });
 
   afterEach(function () {
