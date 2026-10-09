@@ -1,0 +1,18 @@
+en:
+  "double\nquoted": "double\nline\t\"quoted\"\\tail"
+  'single\nquoted': 'single\nline "quoted" \tail'
+  plain\nkey: plain\nline "quoted" \tail
+  block: |
+    line one
+    line two \n "quoted"
+  folded: >
+    folded first
+    second \n "quoted"
+  controls: "bell\a\v\e\x017\x1FA"
+  trigraph: 'question ??/n and ??= and ??!'
+  tokens: "tokens $& $$ $1 $` $'"
+  plurals:
+    one: "one\n\"item\""
+    other: |-
+      many
+      "items" \n

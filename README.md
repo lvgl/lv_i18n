@@ -58,6 +58,24 @@ npx github:lvgl/lv_i18n -h
 npx lv_i18n -h
 ```
 
+The npm release `0.2.1` predates C escape decoding in the extractor. If
+newlines or quotes are extracted as literal backslash sequences, use current
+source and run that checkout explicitly:
+
+```sh
+git clone https://github.com/lvgl/lv_i18n.git
+cd lv_i18n
+npm ci
+node ./lv_i18n.js -h
+```
+
+Use `node /path/to/lv_i18n/lv_i18n.js extract ...` and `compile ...` for both
+steps. An installation built from current source uses `dist/lv_i18n.js`; run
+`npm run build` after changing source if you use that bundle. Check which
+executable you are running:
+the version number alone may not distinguish an old release from a checkout
+whose package version has not yet changed.
+
 
 ## Mark up the text in your code
 
@@ -143,6 +161,59 @@ Example:
 ```
 
 If translators want to know where a message comes from, then use `lv_i18n extract --dump-sourceref sr.json ...` to generate the file `sr.json` containing file names and line number of each message.
+
+### Newlines, quotes and backslashes
+
+`extract` decodes C string escapes once. YAML stores the resulting text, and
+`compile` escapes that text once when generating C. For example:
+
+```c
+_("Preparing\nUpdate");
+_("Press \"Start\"");
+_("Literal \\n");
+```
+
+Corresponding translations can be written as:
+
+```yml
+de:
+  "Preparing\nUpdate": "Update\nvorbereiten"
+  'Press "Start"': 'Drücke "Start"'
+  'Literal \n': 'Wörtliches \n'
+```
+
+YAML interprets backslash escapes only inside **double quotes**. In plain or
+single-quoted text, `\n` is a literal backslash followed by `n`. Thus
+`"Preparing\nUpdate"` contains a newline, while `'Preparing\nUpdate'` does not.
+For a literal backslash inside double quotes, write `\\`. Apostrophes need no
+C escaping in translations; inside single-quoted YAML, double them:
+`'Don''t stop'`.
+
+Keys and translations cannot contain a NUL character (`U+0000`): the C API uses
+NUL-terminated strings. `compile` rejects these values before writing output.
+Literal backslash sequences such as `'\0'` in single-quoted YAML are ordinary
+text and remain supported.
+
+The extractor may use a YAML literal block (`|` or `|-`, including an explicit
+`?` block key) for multiline text. This preserves line breaks. A folded block
+(`>`) normally turns those breaks into spaces, so it is not interchangeable.
+
+When updating catalogs created before C escape decoding was added:
+
+1. Back up the YAML files and use the same current executable for extraction
+   and compilation.
+2. Compare affected keys with their C source. Correct legacy keys such as
+   `Preparing\nUpdate: ~` to `"Preparing\nUpdate": ~` in every locale, keeping
+   existing translations and plural forms. Review values separately: quote
+   escape sequences only where an actual newline or other escaped character
+   was intended.
+3. Run `extract` and review its orphaned-key report and the YAML diff. If both
+   old and corrected keys exist, retain the translation under the corrected
+   key before removing the obsolete entry. Regenerate the C and H files.
+
+Do not globally unescape YAML or discard existing catalogs to re-extract them:
+literal backslashes are valid translation data, and existing translations must
+be preserved.
 
 ## Run compile to convert the yml files to a C and H file
 
