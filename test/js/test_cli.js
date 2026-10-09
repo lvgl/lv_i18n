@@ -24,7 +24,7 @@ describe('Script', function () {
         [ script_path, 'rename', '-t', `${bad_yaml_path}`, '--from', 'foo',  '--to', 'bar' ],
         { stdio: 'pipe' }
       ),
-      /YAMLException/
+      /YAMLParseError/
     );
   });
 

@@ -3,9 +3,9 @@
 
 const assert            = require('assert');
 const shell             = require('shelljs');
-const yaml              = require('js-yaml');
+const yaml              = require('yaml');
 const { join }          = require('path');
-const { readFileSync }  = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 
 const { run }           = require('../../lib/cli');
 
@@ -63,7 +63,7 @@ describe('CLI extract', function () {
     run([ 'extract', '-s', join(fixtures, 'src_*.c'), '-t', join(fixtures, 'empty_*.yml') ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures, 'empty_en-GB.yml'))),
+      yaml.parse(readFileSync(join(fixtures, 'empty_en-GB.yml'), 'utf8')),
       {
         'en-GB': {
           text1: null,
@@ -76,7 +76,7 @@ describe('CLI extract', function () {
       }
     );
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures, 'empty_ru-RU.yml'))),
+      yaml.parse(readFileSync(join(fixtures, 'empty_ru-RU.yml'), 'utf8')),
       {
         'ru-RU': {
           text1: null,
@@ -96,7 +96,7 @@ describe('CLI extract', function () {
     run([ 'extract', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures, 'partial_en-GB.yml'))),
+      yaml.parse(readFileSync(join(fixtures, 'partial_en-GB.yml'), 'utf8')),
       {
         'en-GB': {
           text1: null,
@@ -104,6 +104,42 @@ describe('CLI extract', function () {
         }
       }
     );
+  });
+
+  it('Should keep comments & formatting of existing content', function () {
+    let file = join(fixtures, 'comments_en-GB.yml');
+
+    writeFileSync(file, `# Header
+en-GB:
+  # Greeting
+  text1: 'Hello' # trailing
+  # Orphaned
+  stale: "old"
+`);
+
+    run([ 'extract', '-s', join(fixtures, 'src_*.c'), '-t', file ]);
+
+    assert.strictEqual(readFileSync(file, 'utf8'), `# Header
+en-GB:
+  # Greeting
+  text1: 'Hello' # trailing
+  # Orphaned
+  stale: "old"
+  text2: ~
+  text3:
+    one: ~
+    other: ~
+`);
+  });
+
+  it('Should expand empty flow locale to block style', function () {
+    let file = join(fixtures, 'flow_en-GB.yml');
+
+    writeFileSync(file, 'en-GB: {}\n');
+
+    run([ 'extract', '-s', join(fixtures, 'src_1.c'), '-t', file ]);
+
+    assert.strictEqual(readFileSync(file, 'utf8'), 'en-GB:\n  text1: ~\n  text2: ~\n');
   });
 
   it('Should fail on singular/plural mix', function () {

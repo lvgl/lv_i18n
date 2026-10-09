@@ -3,7 +3,7 @@
 
 const assert            = require('assert');
 const shell             = require('shelljs');
-const yaml              = require('js-yaml');
+const yaml              = require('yaml');
 const { join }          = require('path');
 const { readFileSync }  = require('fs');
 
@@ -23,7 +23,7 @@ describe('newlines', function () {
     run([ 'extract', '-s', join(fixtures_tmp_dir, 'src.c'), '-t', join(fixtures_tmp_dir, 'partial_*.yml') ]);
 
     assert.deepStrictEqual(
-      yaml.load(readFileSync(join(fixtures_tmp_dir, 'partial_ru-RU.yml'))),
+      yaml.parse(readFileSync(join(fixtures_tmp_dir, 'partial_ru-RU.yml'), 'utf8')),
       {
         'ru-RU': {
           'line1\nline2\ttext\nline3': null

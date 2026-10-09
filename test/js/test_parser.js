@@ -2,7 +2,7 @@
 
 
 const assert            = require('assert');
-const yaml              = require('js-yaml');
+const yaml              = require('yaml');
 const { join }          = require('path');
 const { readFileSync }  = require('fs');
 
@@ -125,7 +125,7 @@ describe('Parser', function () {
 
   describe('unescape_c', function () {
     const test_file = join(__dirname, 'fixtures', 'c_escapes.yml');
-    let tests = yaml.load(readFileSync(test_file));
+    let tests = yaml.parse(readFileSync(test_file, 'utf8'));
 
     for (let [ src, dst ] of Object.values(tests)) {
       it(src, function () {
