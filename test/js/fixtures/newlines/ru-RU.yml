@@ -1,2 +1,2 @@
 ru-RU:
-  "line1\nline2\ttext\nline3": "строка1\nстрока2\tтекст\nстрока3"
+  "line1\nline2\ttext\nline3\nline4\nline5": "строка1\nстрока2\tтекст\nстрока3\nстрока4\\бекслэш\nстрока5\"кавычка"
