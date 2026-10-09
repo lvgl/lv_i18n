@@ -106,6 +106,31 @@ describe('CLI extract', function () {
     );
   });
 
+  it('Should not update translations with -c', function () {
+    let file = join(fixtures, 'partial_en-GB.yml');
+    let before = readFileSync(file, 'utf8');
+
+    assert.throws(
+      () => {
+        run([ 'extract', '-c', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
+      },
+      /Your translations have missed phrases:[\s\S]*partial_en-GB\.yml\s+text1\s*$/
+    );
+
+    assert.strictEqual(readFileSync(file, 'utf8'), before);
+  });
+
+  it('Should pass -c when no phrases are missed', function () {
+    run([ 'extract', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
+
+    let file = join(fixtures, 'partial_en-GB.yml');
+    let before = readFileSync(file, 'utf8');
+
+    run([ 'extract', '-c', '-s', join(fixtures, 'src_1.c'), '-t', join(fixtures, 'partial_*.yml') ]);
+
+    assert.strictEqual(readFileSync(file, 'utf8'), before);
+  });
+
   it('Should fail on singular/plural mix', function () {
     assert.throws(
       () => {
