@@ -123,6 +123,29 @@ describe('Parser', function () {
   });
 
 
+  it('Should not end literals at escaped quotes before delimiters', function () {
+    assert.deepStrictEqual(
+      parse(String.raw`_("Close \"), then continue"); _p("Quote \", then count", n);`),
+      [
+        { key: 'Close "), then continue', line: 1, plural: false },
+        { key: 'Quote ", then count', line: 1, plural: true }
+      ]
+    );
+  });
+
+
+  it('Should find calls after newlines and tabs without matching longer names', function () {
+    assert.deepStrictEqual(
+      parse('_("first");\n_("second");\n\t_p("third", n); other_("ignored");'),
+      [
+        { key: 'first', line: 1, plural: false },
+        { key: 'second', line: 2, plural: false },
+        { key: 'third', line: 3, plural: true }
+      ]
+    );
+  });
+
+
   describe('unescape_c', function () {
     const test_file = join(__dirname, 'fixtures', 'c_escapes.yml');
     let tests = yaml.load(readFileSync(test_file));
