@@ -189,6 +189,11 @@ For a literal backslash inside double quotes, write `\\`. Apostrophes need no
 C escaping in translations; inside single-quoted YAML, double them:
 `'Don''t stop'`.
 
+Keys and translations cannot contain a NUL character (`U+0000`): the C API uses
+NUL-terminated strings. `compile` rejects these values before writing output.
+Literal backslash sequences such as `'\0'` in single-quoted YAML are ordinary
+text and remain supported.
+
 The extractor may use a YAML literal block (`|` or `|-`, including an explicit
 `?` block key) for multiline text. This preserves line breaks. A folded block
 (`>`) normally turns those breaks into spaces, so it is not interchangeable.

@@ -8,6 +8,7 @@ const { tmpdir } = require('os');
 const { join } = require('path');
 const yaml = require('js-yaml');
 const { run } = require('../../lib/cli');
+const AppError = require('../../lib/app_error');
 
 const fixtures = join(__dirname, 'fixtures', 'escape_roundtrip');
 const compiler = process.env.CC || 'cc';
@@ -17,6 +18,7 @@ const compiler = process.env.CC || 'cc';
 const translations = {
   'line1\nline2': 'riga1\nriga2',
   'literal\\ntext': 'letterale\\ntesto',
+  'literal\\0text': 'zero\\0testo',
   'quote " and slash \\': 'virgolette " e barra \\',
   'controls\t\r\b\f\x07\v\x1b': 'controlli\t\r\b\f\x07\v\x1b',
   'unicode café 日本語': 'traduzione è 日本語',
@@ -79,6 +81,39 @@ describe('C / YAML escape round trip', function () {
 
   [ false, true ].forEach(optimize => {
     const mode = optimize ? 'optimized' : 'normal';
+
+    const invalidCatalogs = [
+      [ 'singular key', { 'prefix\x00suffix': 'translation', prefix: 'different translation' } ],
+      [ 'plural key', { 'prefix\x00suffix': { one: 'one', other: 'many' } } ],
+      [ 'singular value', { key: 'prefix\x00suffix' } ],
+      [ 'plural value', { key: { one: 'one', other: 'prefix\x00suffix' } } ],
+      [ 'leading NUL', { key: '\x00suffix' } ],
+      [ 'trailing NUL', { key: 'prefix\x00' } ]
+    ];
+
+    invalidCatalogs.forEach(([ location, catalog ]) => {
+      it(`rejects NUL in ${location} before writing ${mode} output`, function () {
+        const translationFile = join(directory, 'en.yml');
+        writeFileSync(translationFile, yaml.dump({ en: catalog }));
+        const outputFiles = [ 'lv_i18n.c', 'lv_i18n.h', 'translations.raw', 'translations.h' ];
+        outputFiles.forEach(file => writeFileSync(join(directory, file), 'existing output'));
+        const args = [
+          'compile', '-t', translationFile, '-l', 'en', '-o', directory,
+          '--raw', join(directory, 'translations.raw')
+        ];
+        if (optimize) args.push('--optimize');
+
+        assert.throws(() => run(args), error => {
+          assert.ok(error instanceof AppError);
+          assert.match(error.message, /NUL.*NUL-terminated/);
+          assert.ok(error.message.includes('\\u0000'));
+          return true;
+        });
+        outputFiles.forEach(file => {
+          assert.strictEqual(readFileSync(join(directory, file), 'utf8'), 'existing output');
+        });
+      });
+    });
 
     describe(`${mode} C runtime`, function () {
       before(function () {

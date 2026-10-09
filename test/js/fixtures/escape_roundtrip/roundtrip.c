@@ -6,6 +6,7 @@ int main(void)
 
     CHECK(_("line1\nline2"), "riga1\nriga2");
     CHECK(_("literal\\ntext"), "letterale\\ntesto");
+    CHECK(_("literal\\0text"), "zero\\0testo");
     CHECK(_("quote \" and slash \\"), "virgolette \" e barra \\");
     CHECK(_("controls\t\r\b\f\a\v\e"), "controlli\t\r\b\f\a\v\033");
     CHECK(_("unicode café 日本語"), "traduzione è 日本語");
