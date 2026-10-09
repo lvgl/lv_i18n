@@ -30,9 +30,9 @@ const translations = {
 };
 
 function assertProcess(result, description) {
-  assert.ifError(result.error);
-  assert.strictEqual(result.status, 0,
-    `${description}\n${result.stdout || ''}${result.stderr || ''}`);
+  const output = `${result.stdout || ''}${result.stderr || ''}`;
+  if (result.error) assert.fail(`${description}: ${result.error.message}\n${output}`);
+  assert.strictEqual(result.status, 0, `${description}\n${output}`);
 }
 
 function compileAndRun(directory, fixture) {
