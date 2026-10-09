@@ -9,8 +9,8 @@ const { readFileSync }  = require('fs');
 
 const { run }           = require('../../lib/cli');
 
-const fixtures_src_dir = join(__dirname, 'fixtures/cli_rename');
-const fixtures_tmp_dir = join(__dirname, 'fixtures/cli_rename.tmp');
+const fixtures_src_dir = join(__dirname, 'fixtures', 'cli_rename');
+const fixtures_tmp_dir = join(__dirname, 'fixtures', 'cli_rename.tmp');
 const fixtures_yaml_path = join(fixtures_tmp_dir, '*.yml');
 
 

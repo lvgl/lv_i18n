@@ -11,8 +11,8 @@ const { run } = require('../lib/cli');
 
 const tmp_file = join(__dirname, 'raw.tmp');
 const tmp_file_h = join(dirname(tmp_file), basename(tmp_file, extname(tmp_file)) + '.h');
-const template_c = join(__dirname, '../src/lv_i18n.template.c');
-const template_h = join(__dirname, '../src/lv_i18n.template.h');
+const template_c = join(__dirname, '..', 'src', 'lv_i18n.template.c');
+const template_h = join(__dirname, '..', 'src', 'lv_i18n.template.h');
 const template_yaml = join(__dirname, 'template_data.yml');
 
 run([ 'compile', '-t', template_yaml, '--raw', tmp_file ]);

@@ -9,8 +9,8 @@ const { readFileSync }  = require('fs');
 
 const { run }           = require('../../lib/cli');
 
-const fixtures_src_dir = join(__dirname, 'fixtures/newlines');
-const fixtures_tmp_dir = join(__dirname, 'fixtures/newlines.tmp');
+const fixtures_src_dir = join(__dirname, 'fixtures', 'newlines');
+const fixtures_tmp_dir = join(__dirname, 'fixtures', 'newlines.tmp');
 
 
 describe('newlines', function () {
