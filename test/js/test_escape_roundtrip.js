@@ -42,8 +42,9 @@ function compileAndRun(directory, fixture) {
   assertProcess(spawnSync(compiler, [
     '-std=c99', '-Wall', '-Wextra', '-Werror',
     join(directory, 'test.c'), join(directory, 'lv_i18n.c'), '-o', executable
-  ], { encoding: 'utf8' }), 'Generated C must compile');
-  assertProcess(spawnSync(executable, [], { encoding: 'utf8' }), 'Translations must match their runtime bytes');
+  ], { encoding: 'utf8', timeout: 10000 }), 'Generated C must compile');
+  assertProcess(spawnSync(executable, [], { encoding: 'utf8', timeout: 10000 }),
+    'Translations must match their runtime bytes');
 }
 
 describe('C / YAML escape round trip', function () {
@@ -116,8 +117,12 @@ describe('C / YAML escape round trip', function () {
     });
 
     describe(`${mode} C runtime`, function () {
+      // Cold compiler startup on CI can exceed Mocha's default two seconds.
+      // Each child process still has its own timeout to catch hangs.
+      this.timeout(30000);
+
       before(function () {
-        const probe = spawnSync(compiler, [ '--version' ], { encoding: 'utf8' });
+        const probe = spawnSync(compiler, [ '--version' ], { encoding: 'utf8', timeout: 10000 });
         // npm's JS-only tests remain usable without a C toolchain. An explicit CC must work.
         if (probe.error && probe.error.code === 'ENOENT' && !process.env.CC) this.skip();
         assertProcess(probe, 'C compiler must be available');
