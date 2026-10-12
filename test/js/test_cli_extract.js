@@ -5,7 +5,7 @@ const assert            = require('assert');
 const shell             = require('shelljs');
 const yaml              = require('js-yaml');
 const { join }          = require('path');
-const { readFileSync }  = require('fs');
+const { readFileSync, writeFileSync } = require('fs');
 
 const { run }           = require('../../lib/cli');
 
@@ -101,6 +101,26 @@ describe('CLI extract', function () {
         'en-GB': {
           text1: null,
           text2: 'existing text'
+        }
+      }
+    );
+  });
+
+  it('Should handle phrases named like Object.prototype methods', function () {
+    let src = join(fixtures, 'proto.c');
+    let file = join(fixtures, 'proto_en-GB.yml');
+
+    writeFileSync(src, '_("hasOwnProperty"); _("toString");\n');
+    writeFileSync(file, 'en-GB:\n  toString: x\n');
+
+    run([ 'extract', '-s', src, '-t', file ]);
+
+    assert.deepStrictEqual(
+      yaml.load(readFileSync(file, 'utf8')),
+      {
+        'en-GB': {
+          toString: 'x',
+          hasOwnProperty: null
         }
       }
     );
