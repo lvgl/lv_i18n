@@ -71,7 +71,10 @@ describe('CLI extract', function () {
           text3: {
             one: null,
             other: null
-          }
+          },
+          text5: null,
+          text6: null,
+          text7: null
         }
       }
     );
@@ -86,7 +89,10 @@ describe('CLI extract', function () {
             few: null,
             many: null,
             other: null
-          }
+          },
+          text5: null,
+          text6: null,
+          text7: null
         }
       }
     );
@@ -100,7 +106,10 @@ describe('CLI extract', function () {
       {
         'en-GB': {
           text1: null,
-          text2: 'existing text'
+          text2: 'existing text',
+          text5: null,
+          text6: null,
+          text7: null
         }
       }
     );
