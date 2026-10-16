@@ -17,23 +17,23 @@ static const lv_i18n_lang_t * current_lang;
 static inline uint32_t op_n(int32_t val) { return (uint32_t)(val < 0 ? -val : val); }
 static inline uint32_t op_i(uint32_t val) { return val; }
 // always zero, when decimal part not exists.
-static inline uint32_t op_v(uint32_t val) { UNUSED(val); return 0; }
+static inline uint32_t op_v(uint32_t val) { UNUSED(val); return 0;}
 static inline uint32_t op_w(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_f(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_t(uint32_t val) { UNUSED(val); return 0; }
 static inline uint32_t op_e(uint32_t val) { UNUSED(val); return 0; }
 
-static const char * en_gb_singulars[] = {
+static const char * const en_gb_singulars[] = {
   "english only", // 0="s_en_only"
   "s translated", // 1="s_translated"
   NULL, // 2="s_untranslated"
 };
 
-static const char * en_gb_plurals_one[] = {
+static const char * const en_gb_plurals_one[] = {
   "I have %d dog", // 0="p_i_have_dogs"
 };
 
-static const char * en_gb_plurals_other[] = {
+static const char * const en_gb_plurals_other[] = {
   "I have %d dogs", // 0="p_i_have_dogs"
 };
 
@@ -55,21 +55,21 @@ static const lv_i18n_lang_t en_gb_lang = {
     .locale_plural_fn = en_gb_plural_fn
 };
 
-static const char * ru_ru_singulars[] = {
+static const char * const ru_ru_singulars[] = {
   NULL, // 0="s_en_only"
   "s переведено", // 1="s_translated"
   NULL, // 2="s_untranslated"
 };
 
-static const char * ru_ru_plurals_one[] = {
+static const char * const ru_ru_plurals_one[] = {
   "У меня %d собакен", // 0="p_i_have_dogs"
 };
 
-static const char * ru_ru_plurals_few[] = {
+static const char * const ru_ru_plurals_few[] = {
   "У меня %d собакена", // 0="p_i_have_dogs"
 };
 
-static const char * ru_ru_plurals_many[] = {
+static const char * const ru_ru_plurals_many[] = {
   "У меня %d собакенов", // 0="p_i_have_dogs"
 };
 
@@ -121,15 +121,15 @@ const lv_i18n_language_pack_t lv_i18n_language_pack[] = {
 
 #ifndef LV_I18N_OPTIMIZE
 
-static const char * singular_idx[] = {
-"s_en_only",
-"s_translated",
-"s_untranslated",
+static const char * const singular_idx[] = {
+    "s_en_only",
+    "s_translated",
+    "s_untranslated",
 
 };
 
-static const char * plural_idx[] = {
-"p_i_have_dogs",
+static const char * const plural_idx[] = {
+    "p_i_have_dogs",
 
 };
 
@@ -218,7 +218,7 @@ const char * lv_i18n_get_plural_by_idx(const char * msg_id, int msg_index, int32
 #else
 // Fallback for ancient compilers, search phrase IDs in runtime (slow)
 
-static int __lv_i18n_get_id(const char * phrase, const char * * list, int len)
+static int __lv_i18n_get_id(const char * phrase, const char * const * list, int len)
 {
     uint16_t i;
     for(i = 0; i < len; i++) {

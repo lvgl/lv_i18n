@@ -215,7 +215,7 @@ void test_empty_plurals_fallback(void)
 
 void test_empty_content_check(void)
 {
-    static const char * en_gb_singulars[] = {
+    static const char * const en_gb_singulars[] = {
          NULL, // 1=s_en_only
          NULL, // 2=s_translated
          NULL, // 3="s_untranslated"
